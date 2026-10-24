@@ -88,6 +88,8 @@ $Stage = Join-Path $TargetDir "windows-package\$Arch"
 Remove-Item -Recurse -Force $Stage -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
 Copy-Item (Join-Path $Bin 'yedit.exe'), (Join-Path $Bin 'yedit-cli.exe') $Stage
+# The MSI installs the license texts and notices next to the binaries (yedit.wxs).
+Copy-Item (Join-Path $Root 'LICENSE-MIT'), (Join-Path $Root 'LICENSE-APACHE'), (Join-Path $Root 'NOTICE'), (Join-Path $Root 'ATTRIBUTION.md') $Stage
 
 & (Join-Path $PSScriptRoot 'sign.ps1') (Join-Path $Stage 'yedit.exe') (Join-Path $Stage 'yedit-cli.exe')
 

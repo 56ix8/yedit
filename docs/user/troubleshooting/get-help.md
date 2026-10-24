@@ -2,10 +2,10 @@
 title: Get help with a problem
 description: How to ask for help or file a YEDIT bug so it can be fixed, and what to include.
 order: 30
-verified: 0.8.2
+verified: 0.15.1
 ---
 
-Open **Help › Report an Issue…**. It takes you to the [YEDIT issue tracker](https://github.com/storytold/photocraft/issues) on GitHub. You can also ask in [Discord](https://discord.gg/artcraft).
+Open an issue in the [YEDIT issue tracker](https://github.com/56ix8/yedit/issues) on GitHub.
 
 ## What to include
 

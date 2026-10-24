@@ -148,6 +148,20 @@
       <Component Id="YeditCli">
         <File Id="YeditCliExe" Source="$(var.BinDir)\yedit-cli.exe" KeyPath="yes" />
       </Component>
+
+      <!-- License texts and notices (MIT OR Apache-2.0; NOTICE carries the PhotoCraft attribution). -->
+      <Component Id="LicenseMit">
+        <File Id="LicenseMitTxt" Source="$(var.BinDir)\LICENSE-MIT" Name="LICENSE-MIT.txt" KeyPath="yes" />
+      </Component>
+      <Component Id="LicenseApache">
+        <File Id="LicenseApacheTxt" Source="$(var.BinDir)\LICENSE-APACHE" Name="LICENSE-APACHE.txt" KeyPath="yes" />
+      </Component>
+      <Component Id="Notice">
+        <File Id="NoticeTxt" Source="$(var.BinDir)\NOTICE" Name="NOTICE.txt" KeyPath="yes" />
+      </Component>
+      <Component Id="Attribution">
+        <File Id="AttributionMd" Source="$(var.BinDir)\ATTRIBUTION.md" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
   </Fragment>
 </Wix>

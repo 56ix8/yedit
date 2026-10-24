@@ -1,14 +1,12 @@
 # User docs: rules for agents and contributors
 
-Everything in this folder (except this file, CLAUDE.md and README.md) is published at
-https://getartcraft.com/docs/yedit. The file path is the URL:
-`troubleshooting/taskbar-turns-black.md` → `/docs/yedit/troubleshooting/taskbar-turns-black`.
-Renaming a file breaks links, so add the old path to `redirect_from` when you rename.
+Everything in this folder (except this file, CLAUDE.md and README.md) is YEDIT's user
+guide, read on GitHub. Renaming a file breaks links between pages, so update them when you rename.
 
 ## Who reads this
 
-Artists using YEDIT, Discord mods answering them, and AI assistants looking things up for
-either. Write for an artist, not a developer.
+Artists using YEDIT and AI assistants looking things up for
+them. Write for an artist, not a developer.
 
 ## Page rules
 
@@ -18,10 +16,10 @@ either. Write for an artist, not a developer.
 - Link to other pages instead of repeating them. Use relative links to the `.md` file:
   `[Install YEDIT](../getting-started/install.md)`.
 - No marketing copy, no "simply", no claims you have not checked in the code or a release.
-- Call the product "YEDIT", as the app, its downloads and getartcraft.com do.
+- Call the product "YEDIT", as the app and its downloads do.
 - Name UI labels exactly as the app shows them, in **bold**. Menu paths read `File › Open…`.
 - Troubleshooting pages: `## Symptoms`, `## Fix`, `## Why this happens` (optional),
-  `## Still stuck?` (link the issue tracker or Discord).
+  `## Still stuck?` (link the issue tracker).
 
 ## Frontmatter
 
@@ -50,9 +48,8 @@ drafts and are not published.
 
 ## Check before you push
 
-    node <path to your artcraft-services checkout>/frontend/apps/artcraft-website-next/scripts/docs/core.mjs docs/user
-
-The checker lives in storytold/artcraft-services. A CI check will be added once it is on that repo's main branch.
+YEDIT has no automated checker for these pages; follow the rules above and preview the
+Markdown on GitHub.
 
 ## Support PRs
 

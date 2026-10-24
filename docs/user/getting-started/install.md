@@ -1,54 +1,23 @@
 ---
 title: Install YEDIT
-description: Download YEDIT for Windows 10 or 11, macOS or Linux from getartcraft.com or GitHub, or install it with ArtCraft Launcher.
+description: Download YEDIT for 64-bit Windows 10 or 11 from the GitHub releases page, as an installer or a portable zip.
 order: 10
-verified: 0.8.2
+verified: 0.15.1
 ---
 
-The easiest way is the [YEDIT page on getartcraft.com](https://getartcraft.com/apps/photocraft). You can also install it with [ArtCraft Launcher](https://getartcraft.com/docs/craft-launcher/guides/install-and-update-apps), which lists YEDIT. For a specific build or file format, take it from the [latest release](https://github.com/storytold/photocraft/releases/latest) on GitHub. In the file names below, `<version>` stands for the version number, for example `0.8.2`.
+Download YEDIT from the [latest release](https://github.com/56ix8/yedit/releases/latest) on GitHub. Ready-made builds exist for 64-bit Windows only for now; on other systems, build it from source as the repository README describes. In the file names below, `<version>` stands for the version number, for example `0.15.1`.
 
 ## Windows
 
-YEDIT needs Windows 10 or later. On Windows 7 and 8 the installer stops with "YEDIT needs Windows 10 or later."
+YEDIT needs 64-bit Windows 10 or later on an Intel or AMD processor.
 
-1. Open the [latest release](https://github.com/storytold/photocraft/releases/latest).
-2. Download `yedit-<version>-windows-x64.msi`. It fits most PCs (64-bit Intel and AMD).
+1. Open the [latest release](https://github.com/56ix8/yedit/releases/latest).
+2. Download `yedit-<version>-windows-x64.msi`.
 3. Run the file and follow the installer.
 
-To run without installing, download `yedit-<version>-windows-x64-portable.zip` instead and unzip it.
+To run without installing, download `yedit-<version>-windows-x64-portable.zip` instead, unzip it and run `yedit.exe`. Its settings then stay in a `YEDITData` folder next to it.
 
-| Your PC                            | Installer                                | Portable                                          |
-|------------------------------------|------------------------------------------|---------------------------------------------------|
-| 64-bit Intel or AMD                | `yedit-<version>-windows-x64.msi`   | `yedit-<version>-windows-x64-portable.zip`   |
-| Arm (Snapdragon and other Arm PCs) | `yedit-<version>-windows-arm64.msi` | `yedit-<version>-windows-arm64-portable.zip` |
-| 32-bit                             | `yedit-<version>-windows-x86.msi`   | `yedit-<version>-windows-x86-portable.zip`   |
-
-The installers and executables are code-signed.
-
-## macOS
-
-1. Download `yedit-<version>-macos-universal.dmg`. It works on Apple silicon and Intel Macs, and is signed and notarized by Apple.
-2. Open it and drag YEDIT to Applications.
-
-## Linux
-
-Pick one file from the release. Use `x86_64` for Intel and AMD, or `aarch64` for Arm.
-
-| Format              | File                                         | Notes                                                                              |
-|---------------------|----------------------------------------------|------------------------------------------------------------------------------------|
-| AppImage            | `yedit-<version>-linux-x86_64.AppImage` | Runs anywhere and needs no install.                                                |
-| Debian and Ubuntu   | `yedit-<version>-linux-x86_64.deb`      |                                                                                    |
-| Fedora and openSUSE | `yedit-<version>-linux-x86_64.rpm`      |                                                                                    |
-| Flatpak             | `yedit-<version>-linux-x86_64.flatpak`  | Run `flatpak install --user <file>`, then `flatpak run com.fesilabs.yedit`. |
-| Tarball             | `yedit-<version>-linux-x86_64.tar.gz`   | Unpack it anywhere.                                                                |
-
-The first time you run the AppImage, it adds its icon and menu entry under `~/.local/share`. Set `YEDIT_NO_DESKTOP_INTEGRATION=1` to skip that. For RISC-V, take the `riscv64` file: `yedit-<version>-linux-riscv64.tar.gz`, `.deb` or `.rpm`. The RISC-V tarball needs glibc 2.39 or newer.
-
-On a Wayland session, files dropped on the YEDIT window do not open yet. Use **File › Open…** instead, or copy the image in your file manager and paste it with Ctrl+V. To drag and drop, start YEDIT under XWayland with `WAYLAND_DISPLAY= yedit`. YEDIT shows the right command for your install in a notice until you dismiss it.
-
-## FreeBSD and the web
-
-FreeBSD 14 (x86_64) has a tarball, `yedit-<version>-freebsd-x86_64.tar.gz`, laid out like `/usr/local`. The web version comes as `yedit-web-<version>.zip`, a static site you host on any web server. It runs in a modern browser.
+The files are not code-signed. Windows may show **Windows protected your PC**: choose **More info**, then **Run anyway**. The installer's permission prompt names an unknown publisher.
 
 ## Check your download
 
