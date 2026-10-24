@@ -3,7 +3,7 @@
 
 use crate::common;
 use common::*;
-use photocraft_codecs::*;
+use yedit_codecs::*;
 
 const W: u32 = 24;
 const H: u32 = 16;

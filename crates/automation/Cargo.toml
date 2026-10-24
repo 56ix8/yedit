@@ -1,6 +1,6 @@
 [package]
-name = "photocraft-automation"
-description = "MCP server (rmcp) over the PhotoCraft engine, plus a bridge to a running GUI"
+name = "yedit-automation"
+description = "MCP server (rmcp) over the YEDIT engine, plus a bridge to a running GUI"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -10,12 +10,12 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-photocraft-doc = { workspace = true }
-photocraft-compose = { workspace = true }
-photocraft-codecs = { workspace = true }
-photocraft-io = { workspace = true }
-photocraft-format = { path = "../format" }
-photocraft-engine = { workspace = true }
+yedit-doc = { workspace = true }
+yedit-compose = { workspace = true }
+yedit-codecs = { workspace = true }
+yedit-io = { workspace = true }
+yedit-format = { path = "../format" }
+yedit-engine = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
@@ -28,7 +28,7 @@ cap-std = "4"
 
 [dev-dependencies]
 # Synthetic camera raws (#7789).
-photocraft-raw = { workspace = true, features = ["testgen"] }
+yedit-raw = { workspace = true, features = ["testgen"] }
 rmcp = { version = "3.5", default-features = false, features = ["client", "server", "macros", "transport-io"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "io-std", "sync", "net", "io-util", "time"] }
 

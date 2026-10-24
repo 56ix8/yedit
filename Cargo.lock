@@ -4637,503 +4637,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "photocraft"
-version = "0.15.1"
-dependencies = [
- "arboard",
- "async-io",
- "chrono",
- "core-graphics2",
- "dispatch2",
- "eframe",
- "egui",
- "fmv-macos-events",
- "futures-lite",
- "log",
- "muda",
- "objc2 0.6.4",
- "objc2-app-kit 0.3.2",
- "objc2-foundation 0.3.2",
- "open",
- "photocraft-automation",
- "photocraft-cms",
- "photocraft-codecs",
- "photocraft-color",
- "photocraft-compose",
- "photocraft-doc",
- "photocraft-engine",
- "photocraft-format",
- "photocraft-geom",
- "photocraft-io",
- "photocraft-raster",
- "photocraft-tablet",
- "photocraft-ui-egui",
- "resvg",
- "rfd",
- "ron",
- "serde_json",
- "tempfile",
- "ureq",
- "winit",
- "winresource",
- "winsafe",
- "wl-clipboard-rs",
- "x11rb",
- "xcap",
- "zbus",
-]
-
-[[package]]
-name = "photocraft-affinity"
-version = "0.15.1"
-dependencies = [
- "crc32fast",
- "flate2",
- "proptest",
- "ruzstd",
-]
-
-[[package]]
-name = "photocraft-algo"
-version = "0.15.1"
-dependencies = [
- "photocraft-color",
- "photocraft-geom",
- "photocraft-raster",
- "photocraft-testkit",
- "rayon",
- "rustfft",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "photocraft-automation"
-version = "0.15.1"
-dependencies = [
- "base64 0.22.1",
- "cap-std",
- "getrandom 0.3.4",
- "photocraft-codecs",
- "photocraft-compose",
- "photocraft-doc",
- "photocraft-engine",
- "photocraft-format",
- "photocraft-io",
- "photocraft-raw",
- "rmcp",
- "rustix 1.1.5",
- "schemars",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
- "tokio",
-]
-
-[[package]]
-name = "photocraft-cli"
-version = "0.15.1"
-dependencies = [
- "photocraft-automation",
- "photocraft-codecs",
- "photocraft-engine",
- "photocraft-format",
- "photocraft-io",
- "photocraft-raw",
- "serde_json",
- "tokio",
- "winresource",
-]
-
-[[package]]
-name = "photocraft-cms"
-version = "0.15.1"
-dependencies = [
- "moxcms",
- "rayon",
-]
-
-[[package]]
-name = "photocraft-codecs"
-version = "0.15.1"
-dependencies = [
- "exr",
- "flate2",
- "half",
- "image",
- "image-webp",
- "jpeg-encoder",
- "photocraft-heif",
- "png 0.18.1",
- "proptest",
- "rayon",
- "serde_json",
- "thiserror 2.0.21",
- "tiff",
- "zune-core 0.5.3",
- "zune-jpeg 0.5.15",
-]
-
-[[package]]
-name = "photocraft-color"
-version = "0.15.1"
-dependencies = [
- "photocraft-cms",
- "serde",
-]
-
-[[package]]
-name = "photocraft-compose"
-version = "0.15.1"
-dependencies = [
- "criterion",
- "photocraft-cms",
- "photocraft-color",
- "photocraft-doc",
- "photocraft-geom",
- "photocraft-paint",
- "photocraft-raster",
- "photocraft-vector",
- "proptest",
- "rayon",
-]
-
-[[package]]
-name = "photocraft-doc"
-version = "0.15.1"
-dependencies = [
- "photocraft-color",
- "photocraft-geom",
- "photocraft-raster",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "photocraft-engine"
-version = "0.15.1"
-dependencies = [
- "blake3",
- "chrono",
- "craft-print",
- "exr",
- "flate2",
- "photocraft-affinity",
- "photocraft-algo",
- "photocraft-cms",
- "photocraft-codecs",
- "photocraft-color",
- "photocraft-compose",
- "photocraft-doc",
- "photocraft-format",
- "photocraft-geom",
- "photocraft-io",
- "photocraft-ipp",
- "photocraft-ops",
- "photocraft-paint",
- "photocraft-plugins",
- "photocraft-psd",
- "photocraft-raster",
- "photocraft-raw",
- "photocraft-testkit",
- "photocraft-text",
- "photocraft-vector",
- "rayon",
- "roxmltree 0.21.1",
- "same-file",
- "semver",
- "serde",
- "serde_json",
- "tempfile",
- "thiserror 2.0.21",
- "wat",
- "winsafe",
-]
-
-[[package]]
-name = "photocraft-format"
-version = "0.15.1"
-dependencies = [
- "blake3",
- "crc32fast",
- "exacl",
- "flate2",
- "libc",
- "photocraft-codecs",
- "photocraft-color",
- "photocraft-doc",
- "photocraft-geom",
- "photocraft-raster",
- "proptest",
- "rustix 1.1.5",
- "ruzstd",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
- "winsafe",
-]
-
-[[package]]
-name = "photocraft-geom"
-version = "0.15.1"
-dependencies = [
- "serde",
-]
-
-[[package]]
-name = "photocraft-gpu"
-version = "0.15.1"
-dependencies = [
- "half",
- "log",
- "photocraft-cms",
- "photocraft-color",
- "photocraft-compose",
- "photocraft-doc",
- "photocraft-geom",
- "photocraft-raster",
- "photocraft-vector",
- "pollster 1.0.1",
- "rayon",
- "wgpu",
-]
-
-[[package]]
-name = "photocraft-heif"
-version = "0.15.1"
-dependencies = [
- "heic-rs",
-]
-
-[[package]]
-name = "photocraft-io"
-version = "0.15.1"
-dependencies = [
- "blake3",
- "craft-docpath",
- "crc32fast",
- "flate2",
- "photocraft-affinity",
- "photocraft-algo",
- "photocraft-cms",
- "photocraft-codecs",
- "photocraft-color",
- "photocraft-compose",
- "photocraft-doc",
- "photocraft-format",
- "photocraft-geom",
- "photocraft-paint",
- "photocraft-psd",
- "photocraft-raster",
- "photocraft-raw",
- "photocraft-testkit",
- "photocraft-text",
- "photocraft-vector",
- "proptest",
- "resvg",
- "roxmltree 0.21.1",
- "serde_json",
- "thiserror 2.0.21",
-]
-
-[[package]]
-name = "photocraft-ipp"
-version = "0.15.1"
-
-[[package]]
-name = "photocraft-ops"
-version = "0.15.1"
-dependencies = [
- "photocraft-doc",
-]
-
-[[package]]
-name = "photocraft-paint"
-version = "0.15.1"
-dependencies = [
- "photocraft-color",
- "photocraft-geom",
- "photocraft-raster",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "photocraft-plugins"
-version = "0.15.1"
-dependencies = [
- "photocraft-color",
- "photocraft-geom",
- "photocraft-raster",
- "rayon",
- "rustix 1.1.5",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
- "wasmi",
- "wat",
-]
-
-[[package]]
-name = "photocraft-psd"
-version = "0.15.1"
-dependencies = [
- "flate2",
- "photocraft-psd",
- "proptest",
- "serde",
- "thiserror 2.0.21",
-]
-
-[[package]]
-name = "photocraft-raster"
-version = "0.15.1"
-dependencies = [
- "photocraft-color",
- "photocraft-geom",
- "proptest",
- "rayon",
- "serde",
-]
-
-[[package]]
-name = "photocraft-raw"
-version = "0.15.1"
-dependencies = [
- "flate2",
- "image",
- "jxl-oxide",
- "photocraft-raw",
- "png 0.18.1",
- "rayon",
- "zune-core 0.5.3",
- "zune-jpeg 0.5.15",
- "zune-jpegxl",
-]
-
-[[package]]
-name = "photocraft-tablet"
-version = "0.15.1"
-dependencies = [
- "block2 0.6.2",
- "objc2 0.6.4",
- "objc2-app-kit 0.3.2",
- "objc2-core-graphics",
- "objc2-foundation 0.3.2",
- "x11rb",
-]
-
-[[package]]
-name = "photocraft-testkit"
-version = "0.15.1"
-dependencies = [
- "memory-stats",
- "serde_json",
-]
-
-[[package]]
-name = "photocraft-text"
-version = "0.15.1"
-dependencies = [
- "flate2",
- "parley",
- "photocraft-color",
- "photocraft-doc",
- "photocraft-geom",
- "photocraft-psd",
- "photocraft-raster",
- "rayon",
- "skrifa",
-]
-
-[[package]]
-name = "photocraft-ui-egui"
-version = "0.15.1"
-dependencies = [
- "base64 0.22.1",
- "craft-print",
- "craft-ui",
- "eframe",
- "egui",
- "egui_extras",
- "egui_kittest",
- "epaint_default_fonts",
- "flate2",
- "log",
- "photocraft-algo",
- "photocraft-cms",
- "photocraft-codecs",
- "photocraft-color",
- "photocraft-compose",
- "photocraft-doc",
- "photocraft-engine",
- "photocraft-format",
- "photocraft-geom",
- "photocraft-gpu",
- "photocraft-io",
- "photocraft-paint",
- "photocraft-plugins",
- "photocraft-psd",
- "photocraft-raster",
- "photocraft-raw",
- "photocraft-testkit",
- "photocraft-text",
- "photocraft-vector",
- "rayon",
- "serde",
- "serde_json",
- "sys-locale",
- "tempfile",
- "toml",
- "unicode-bidi",
- "winsafe",
-]
-
-[[package]]
-name = "photocraft-vector"
-version = "0.15.1"
-dependencies = [
- "photocraft-color",
- "photocraft-doc",
- "photocraft-geom",
- "photocraft-raster",
- "rayon",
-]
-
-[[package]]
-name = "photocraft-web"
-version = "0.15.1"
-dependencies = [
- "eframe",
- "egui",
- "js-sys",
- "log",
- "photocraft-codecs",
- "photocraft-doc",
- "photocraft-engine",
- "photocraft-io",
- "photocraft-paint",
- "photocraft-psd",
- "photocraft-ui-egui",
- "rfd",
- "serde_json",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
-]
-
-[[package]]
-name = "photocraft-web-boot"
-version = "0.15.1"
-dependencies = [
- "flate2",
- "js-sys",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
-]
-
-[[package]]
 name = "pico-args"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6065,9 +5568,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "48e13bd8c0e9365c43cfa5c9e8f9ad49d3c8444926c9aac819e0e4dc503c8fdf"
 dependencies = [
  "aws-lc-rs",
- "log",
  "once_cell",
- "ring",
  "rustls-pki-types",
  "rustls-webpki",
  "subtle",
@@ -7464,35 +6965,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
-name = "ureq"
-version = "3.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cde93ff05758a36a851a398a772b0b79a82fbe3c186a46f2696baaeaf84c966b"
-dependencies = [
- "base64 0.23.1",
- "log",
- "percent-encoding",
- "rustls",
- "rustls-pki-types",
- "rustls-platform-verifier",
- "ureq-proto",
- "utf8-zero",
- "webpki-roots",
-]
-
-[[package]]
-name = "ureq-proto"
-version = "0.6.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "841583fc36089d7d59419568ae157f43a5a03a2e5a81ba87c77d1596ef46e922"
-dependencies = [
- "base64 0.23.1",
- "http",
- "httparse",
- "log",
-]
-
-[[package]]
 name = "url"
 version = "2.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7530,12 +7002,6 @@ dependencies = [
  "unicode-vo",
  "xmlwriter",
 ]
-
-[[package]]
-name = "utf8-zero"
-version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b8c0a043c9540bae7c578c88f91dda8bd82e59ae27c21baca69c8b191aaf5a6e"
 
 [[package]]
 name = "utf8_iter"
@@ -7972,15 +7438,6 @@ name = "webpki-root-certs"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b96554aa2acc8ccdb7e1c9a58a7a68dd5d13bccc69cd124cb09406db612a1c9b"
-dependencies = [
- "rustls-pki-types",
-]
-
-[[package]]
-name = "webpki-roots"
-version = "1.0.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c1c8e20c8a38fc7d65abfe74eb7280e4aa667e8eec8bc84996d2874810748d9"
 dependencies = [
  "rustls-pki-types",
 ]
@@ -8779,6 +8236,502 @@ name = "y4m"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a5a4b21e1a62b67a2970e6831bc091d7b87e119e7f9791aef9702e3bef04448"
+
+[[package]]
+name = "yedit"
+version = "0.15.1"
+dependencies = [
+ "arboard",
+ "async-io",
+ "chrono",
+ "core-graphics2",
+ "dispatch2",
+ "eframe",
+ "egui",
+ "fmv-macos-events",
+ "futures-lite",
+ "log",
+ "muda",
+ "objc2 0.6.4",
+ "objc2-app-kit 0.3.2",
+ "objc2-foundation 0.3.2",
+ "open",
+ "resvg",
+ "rfd",
+ "ron",
+ "serde_json",
+ "tempfile",
+ "winit",
+ "winresource",
+ "winsafe",
+ "wl-clipboard-rs",
+ "x11rb",
+ "xcap",
+ "yedit-automation",
+ "yedit-cms",
+ "yedit-codecs",
+ "yedit-color",
+ "yedit-compose",
+ "yedit-doc",
+ "yedit-engine",
+ "yedit-format",
+ "yedit-geom",
+ "yedit-io",
+ "yedit-raster",
+ "yedit-tablet",
+ "yedit-ui-egui",
+ "zbus",
+]
+
+[[package]]
+name = "yedit-affinity"
+version = "0.15.1"
+dependencies = [
+ "crc32fast",
+ "flate2",
+ "proptest",
+ "ruzstd",
+]
+
+[[package]]
+name = "yedit-algo"
+version = "0.15.1"
+dependencies = [
+ "rayon",
+ "rustfft",
+ "serde",
+ "serde_json",
+ "yedit-color",
+ "yedit-geom",
+ "yedit-raster",
+ "yedit-testkit",
+]
+
+[[package]]
+name = "yedit-automation"
+version = "0.15.1"
+dependencies = [
+ "base64 0.22.1",
+ "cap-std",
+ "getrandom 0.3.4",
+ "rmcp",
+ "rustix 1.1.5",
+ "schemars",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "yedit-codecs",
+ "yedit-compose",
+ "yedit-doc",
+ "yedit-engine",
+ "yedit-format",
+ "yedit-io",
+ "yedit-raw",
+]
+
+[[package]]
+name = "yedit-cli"
+version = "0.15.1"
+dependencies = [
+ "serde_json",
+ "tokio",
+ "winresource",
+ "yedit-automation",
+ "yedit-codecs",
+ "yedit-engine",
+ "yedit-format",
+ "yedit-io",
+ "yedit-raw",
+]
+
+[[package]]
+name = "yedit-cms"
+version = "0.15.1"
+dependencies = [
+ "moxcms",
+ "rayon",
+]
+
+[[package]]
+name = "yedit-codecs"
+version = "0.15.1"
+dependencies = [
+ "exr",
+ "flate2",
+ "half",
+ "image",
+ "image-webp",
+ "jpeg-encoder",
+ "png 0.18.1",
+ "proptest",
+ "rayon",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tiff",
+ "yedit-heif",
+ "zune-core 0.5.3",
+ "zune-jpeg 0.5.15",
+]
+
+[[package]]
+name = "yedit-color"
+version = "0.15.1"
+dependencies = [
+ "serde",
+ "yedit-cms",
+]
+
+[[package]]
+name = "yedit-compose"
+version = "0.15.1"
+dependencies = [
+ "criterion",
+ "proptest",
+ "rayon",
+ "yedit-cms",
+ "yedit-color",
+ "yedit-doc",
+ "yedit-geom",
+ "yedit-paint",
+ "yedit-raster",
+ "yedit-vector",
+]
+
+[[package]]
+name = "yedit-doc"
+version = "0.15.1"
+dependencies = [
+ "serde",
+ "serde_json",
+ "yedit-color",
+ "yedit-geom",
+ "yedit-raster",
+]
+
+[[package]]
+name = "yedit-engine"
+version = "0.15.1"
+dependencies = [
+ "blake3",
+ "chrono",
+ "craft-print",
+ "exr",
+ "flate2",
+ "rayon",
+ "roxmltree 0.21.1",
+ "same-file",
+ "semver",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 2.0.21",
+ "wat",
+ "winsafe",
+ "yedit-affinity",
+ "yedit-algo",
+ "yedit-cms",
+ "yedit-codecs",
+ "yedit-color",
+ "yedit-compose",
+ "yedit-doc",
+ "yedit-format",
+ "yedit-geom",
+ "yedit-io",
+ "yedit-ipp",
+ "yedit-ops",
+ "yedit-paint",
+ "yedit-plugins",
+ "yedit-psd",
+ "yedit-raster",
+ "yedit-raw",
+ "yedit-testkit",
+ "yedit-text",
+ "yedit-vector",
+]
+
+[[package]]
+name = "yedit-format"
+version = "0.15.1"
+dependencies = [
+ "blake3",
+ "crc32fast",
+ "exacl",
+ "flate2",
+ "libc",
+ "proptest",
+ "rustix 1.1.5",
+ "ruzstd",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "winsafe",
+ "yedit-codecs",
+ "yedit-color",
+ "yedit-doc",
+ "yedit-geom",
+ "yedit-raster",
+]
+
+[[package]]
+name = "yedit-geom"
+version = "0.15.1"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "yedit-gpu"
+version = "0.15.1"
+dependencies = [
+ "half",
+ "log",
+ "pollster 1.0.1",
+ "rayon",
+ "wgpu",
+ "yedit-cms",
+ "yedit-color",
+ "yedit-compose",
+ "yedit-doc",
+ "yedit-geom",
+ "yedit-raster",
+ "yedit-vector",
+]
+
+[[package]]
+name = "yedit-heif"
+version = "0.15.1"
+dependencies = [
+ "heic-rs",
+]
+
+[[package]]
+name = "yedit-io"
+version = "0.15.1"
+dependencies = [
+ "blake3",
+ "craft-docpath",
+ "crc32fast",
+ "flate2",
+ "proptest",
+ "resvg",
+ "roxmltree 0.21.1",
+ "serde_json",
+ "thiserror 2.0.21",
+ "yedit-affinity",
+ "yedit-algo",
+ "yedit-cms",
+ "yedit-codecs",
+ "yedit-color",
+ "yedit-compose",
+ "yedit-doc",
+ "yedit-format",
+ "yedit-geom",
+ "yedit-paint",
+ "yedit-psd",
+ "yedit-raster",
+ "yedit-raw",
+ "yedit-testkit",
+ "yedit-text",
+ "yedit-vector",
+]
+
+[[package]]
+name = "yedit-ipp"
+version = "0.15.1"
+
+[[package]]
+name = "yedit-ops"
+version = "0.15.1"
+dependencies = [
+ "yedit-doc",
+]
+
+[[package]]
+name = "yedit-paint"
+version = "0.15.1"
+dependencies = [
+ "serde",
+ "serde_json",
+ "yedit-color",
+ "yedit-geom",
+ "yedit-raster",
+]
+
+[[package]]
+name = "yedit-plugins"
+version = "0.15.1"
+dependencies = [
+ "rayon",
+ "rustix 1.1.5",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "wasmi",
+ "wat",
+ "yedit-color",
+ "yedit-geom",
+ "yedit-raster",
+]
+
+[[package]]
+name = "yedit-psd"
+version = "0.15.1"
+dependencies = [
+ "flate2",
+ "proptest",
+ "serde",
+ "thiserror 2.0.21",
+ "yedit-psd",
+]
+
+[[package]]
+name = "yedit-raster"
+version = "0.15.1"
+dependencies = [
+ "proptest",
+ "rayon",
+ "serde",
+ "yedit-color",
+ "yedit-geom",
+]
+
+[[package]]
+name = "yedit-raw"
+version = "0.15.1"
+dependencies = [
+ "flate2",
+ "image",
+ "jxl-oxide",
+ "png 0.18.1",
+ "rayon",
+ "yedit-raw",
+ "zune-core 0.5.3",
+ "zune-jpeg 0.5.15",
+ "zune-jpegxl",
+]
+
+[[package]]
+name = "yedit-tablet"
+version = "0.15.1"
+dependencies = [
+ "block2 0.6.2",
+ "objc2 0.6.4",
+ "objc2-app-kit 0.3.2",
+ "objc2-core-graphics",
+ "objc2-foundation 0.3.2",
+ "x11rb",
+]
+
+[[package]]
+name = "yedit-testkit"
+version = "0.15.1"
+dependencies = [
+ "memory-stats",
+ "serde_json",
+]
+
+[[package]]
+name = "yedit-text"
+version = "0.15.1"
+dependencies = [
+ "flate2",
+ "parley",
+ "rayon",
+ "skrifa",
+ "yedit-color",
+ "yedit-doc",
+ "yedit-geom",
+ "yedit-psd",
+ "yedit-raster",
+]
+
+[[package]]
+name = "yedit-ui-egui"
+version = "0.15.1"
+dependencies = [
+ "base64 0.22.1",
+ "craft-print",
+ "craft-ui",
+ "eframe",
+ "egui",
+ "egui_extras",
+ "egui_kittest",
+ "epaint_default_fonts",
+ "flate2",
+ "log",
+ "rayon",
+ "serde",
+ "serde_json",
+ "sys-locale",
+ "tempfile",
+ "toml",
+ "unicode-bidi",
+ "winsafe",
+ "yedit-algo",
+ "yedit-cms",
+ "yedit-codecs",
+ "yedit-color",
+ "yedit-compose",
+ "yedit-doc",
+ "yedit-engine",
+ "yedit-format",
+ "yedit-geom",
+ "yedit-gpu",
+ "yedit-io",
+ "yedit-paint",
+ "yedit-plugins",
+ "yedit-psd",
+ "yedit-raster",
+ "yedit-raw",
+ "yedit-testkit",
+ "yedit-text",
+ "yedit-vector",
+]
+
+[[package]]
+name = "yedit-vector"
+version = "0.15.1"
+dependencies = [
+ "rayon",
+ "yedit-color",
+ "yedit-doc",
+ "yedit-geom",
+ "yedit-raster",
+]
+
+[[package]]
+name = "yedit-web"
+version = "0.15.1"
+dependencies = [
+ "eframe",
+ "egui",
+ "js-sys",
+ "log",
+ "rfd",
+ "serde_json",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "yedit-codecs",
+ "yedit-doc",
+ "yedit-engine",
+ "yedit-io",
+ "yedit-paint",
+ "yedit-psd",
+ "yedit-ui-egui",
+]
+
+[[package]]
+name = "yedit-web-boot"
+version = "0.15.1"
+dependencies = [
+ "flate2",
+ "js-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
 
 [[package]]
 name = "yeslogic-fontconfig-sys"

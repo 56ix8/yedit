@@ -10,6 +10,8 @@ use serde_json::{Value, json};
 use crate::commands::{CommandSpec, always};
 use crate::{EngineError, Result, Session};
 
+/// Upstream PhotoCraft's release page. YEDIT wires no update check (no release feed of its own);
+/// point this at YEDIT's releases before giving a frontend a `CheckFn`.
 pub const RELEASES: &str = "https://github.com/storytold/photocraft/releases";
 pub type CheckResult = std::result::Result<Option<Release>, String>;
 /// Starts background work and returns immediately. No document or personal data is sent.
@@ -119,7 +121,7 @@ pub fn specs() -> Vec<CommandSpec> {
         CommandSpec {
             id: "help.checkForUpdates",
             label: "Check for Updates…",
-            menu: &["Help"],
+            menu: &[],
             shortcut: None,
             params: "{}",
             enabled,

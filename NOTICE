@@ -1,3 +1,17 @@
+YEDIT
+Copyright (c) 2026 FESI Labs.
+Licensed under the MIT License or the Apache License, Version 2.0, at your option
+(LICENSE-MIT, LICENSE-APACHE).
+
+YEDIT is a modified version of PhotoCraft (https://github.com/storytold/photocraft), by the
+ArtCraft team. FESI Labs renamed the product, its crates, binaries, identifiers and native file
+format, replaced the app icon, and removed the ArtCraft marks, the community links and the update
+check. Every file in this repository may carry these changes. YEDIT is not made, sponsored or
+endorsed by the ArtCraft team. PhotoCraft's own notice follows, unchanged except that the files in
+docs/brand/ it names are not part of YEDIT.
+
+------------------------------------------------------------------------------------------------
+
 PhotoCraft
 Copyright (c) 2026 ArtCraft Team and the PhotoCraft contributors.
 Licensed under the MIT License or the Apache License, Version 2.0, at your option

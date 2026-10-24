@@ -1,5 +1,5 @@
-use photocraft_color::SampleType;
-use photocraft_engine::Session;
+use yedit_color::SampleType;
+use yedit_engine::Session;
 use serde_json::{Value, json};
 
 const STYLES: [&str; 10] =

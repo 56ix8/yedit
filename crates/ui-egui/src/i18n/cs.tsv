@@ -16,7 +16,7 @@
 # particular not the Czech localisation of Adobe Photoshop. Add entries the same way.
 # Conventions: menus are nouns (Soubor, Úpravy, Obraz ...), commands are infinitives (Otevřít…,
 # Uložit jako…), sentence case as in the English source. Product and technology names
-# (PhotoCraft, ArtCraft, OpenType, CMYK, Lab ...) stay in Latin letters; the trailing "…" of
+# (YEDIT, PhotoCraft, OpenType, CMYK, Lab ...) stay in Latin letters; the trailing "…" of
 # dialog commands is kept.
 
 # Layer Mask Display Options (the layer mask rubylith's colour and opacity)
@@ -801,11 +801,9 @@
 	Timeline	Časová osa
 	Tool Presets	Přednastavení nástrojů
 	Tools	Nástroje
-	About PhotoCraft	O aplikaci PhotoCraft
-	PhotoCraft Website	Web PhotoCraft
-	PhotoCraft on GitHub	PhotoCraft na GitHubu
-	ArtCraft Website	Web ArtCraft
-	Join the ArtCraft Discord…	Připojit se k Discordu ArtCraft…
+	About YEDIT	O aplikaci YEDIT
+	YEDIT Website	Web YEDIT
+	YEDIT on GitHub	YEDIT na GitHubu
 	Report an Issue…	Nahlásit problém…
 	WIA Support…	Podpora WIA…
 	Apply	Použít
@@ -866,7 +864,7 @@
 	All Caps	Verzálky
 	All Slices	Všechny řezy
 	All User Slices	Všechny uživatelské řezy
-	All shortcuts reset to PhotoCraft defaults.	Všechny zkratky byly obnoveny na výchozí hodnoty PhotoCraftu.
+	All shortcuts reset to YEDIT defaults.	Všechny zkratky byly obnoveny na výchozí hodnoty YEDITu.
 	Alt	Alt
 	Always use pressure for opacity	Vždy použít přítlak pro krytí
 	Always use pressure for size	Vždy použít přítlak pro velikost
@@ -1097,7 +1095,6 @@
 	Diffusion	Difuze
 	Discard the embedded profile (don't color manage)	Zahodit vložený profil (bez správy barev)
 	Discontiguous	Nesouvislé
-	Discord	Discord
 	Dismiss	Zavřít
 	Display P3	Display P3
 	Display Text	Zobrazený text
@@ -1117,8 +1114,8 @@
 	Drop an image or PSD anywhere to open it.	Přetáhněte sem obrázek nebo PSD a otevře se.
 	Native file drag-and-drop is unavailable	Nativní přetahování souborů ve Waylandu není dostupné
 	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or copy the image in your file manager and paste it with {paste}.	Nativní přetahování souborů ve Waylandu zatím není podporováno. Použijte Soubor › Otevřít, nebo obrázek zkopírujte ve správci souborů a vložte ho pomocí {paste}.
-	To drop files, start PhotoCraft under XWayland: `{command}`	Chcete-li soubory přetahovat, spusťte PhotoCraft v XWayland: `{command}`
-	Or set Preferences › Performance › Linux display server to X11: PhotoCraft then always starts under XWayland.	Nebo nastavte Předvolby › Výkon › Zobrazovací server Linuxu na X11: PhotoCraft se pak vždy spustí v XWayland.
+	To drop files, start YEDIT under XWayland: `{command}`	Chcete-li soubory přetahovat, spusťte YEDIT v XWayland: `{command}`
+	Or set Preferences › Performance › Linux display server to X11: YEDIT then always starts under XWayland.	Nebo nastavte Předvolby › Výkon › Zobrazovací server Linuxu na X11: YEDIT se pak vždy spustí v XWayland.
 	Edit › Paste	Úpravy › Vložit
 	Duplicate Layers…	Duplikovat vrstvy…
 	Duplicate style	Duplikovat styl
@@ -1232,7 +1229,6 @@
 	Invert All	Invertovat vše
 	Invert has no settings.	Invertovat nemá žádná nastavení.
 	Italic	Kurzíva
-	Join us on Discord	Přidejte se k nám na Discordu
 	Justify all	Do bloku vše
 	Justify last centered	Do bloku, poslední řádek na střed
 	Justify last left	Do bloku, poslední řádek vlevo
@@ -1368,9 +1364,9 @@
 	Perspective Warp is not active	Perspektivní deformace není aktivní
 	Perspective Warp: draw planes along the image's perspective, then switch to Warp	Perspektivní deformace: nakreslete roviny podle perspektivy obrazu a pak přepněte na deformaci
 	Photo Filter	Fotografický filtr
-	PhotoCraft	PhotoCraft
-	PhotoCraft Manages Colors	Barvy spravuje PhotoCraft
-	PhotoCraft — an open-source, native image editor written in Rust.	PhotoCraft — nativní editor obrázků s otevřeným zdrojovým kódem napsaný v jazyce Rust.
+	YEDIT	YEDIT
+	YEDIT Manages Colors	Barvy spravuje YEDIT
+	YEDIT — an open-source, native image editor written in Rust.	YEDIT — nativní editor obrázků s otevřeným zdrojovým kódem napsaný v jazyce Rust.
 	Pin Depth:	Hloubka špendlíku:
 	Pixel Length:	Délka v pixelech:
 	Pixels/Centimeter	Pixely/centimetr
@@ -1446,11 +1442,11 @@
 	Import Shortcuts…	Importovat zkratky…
 	Load a keyboard shortcut set saved as .kys	Načíst sadu klávesových zkratek uloženou jako .kys
 	Imported {n} shortcuts from {file}. Click OK to keep them.	Importováno zkratek: {n} ze souboru {file}. Klepnutím na OK je ponecháte.
-	{n} commands are not in PhotoCraft.	Příkazů, které v PhotoCraftu nejsou: {n}.
+	{n} commands are not in YEDIT.	Příkazů, které v YEDITu nejsou: {n}.
 	Keyboard shortcuts imported	Klávesové zkratky importovány
 	Your keyboard shortcut set {set} is in use here: {n} shortcuts differ from the defaults. Edit › Keyboard Shortcuts shows them; Reset All to Defaults undoes this.	Vaše sada klávesových zkratek {set} se zde používá: {n} zkratek se liší od výchozích. Zobrazí je Úpravy › Klávesové zkratky; Obnovit vše na výchozí to vrátí zpět.
 	Import keyboard shortcuts?	Importovat klávesové zkratky?
-	PhotoCraft found your keyboard shortcut set {set} from another image editor on this computer: {n} of its shortcuts differ from PhotoCraft's. Import it?	PhotoCraft na tomto počítači našel vaši sadu klávesových zkratek {set} z jiného editoru obrázků: {n} jejích zkratek se liší od zkratek PhotoCraftu. Importovat ji?
+	YEDIT found your keyboard shortcut set {set} from another image editor on this computer: {n} of its shortcuts differ from YEDIT's. Import it?	YEDIT na tomto počítači našel vaši sadu klávesových zkratek {set} z jiného editoru obrázků: {n} jejích zkratek se liší od zkratek YEDITu. Importovat ji?
 	Edit › Keyboard Shortcuts › Reset All to Defaults undoes an import.	Úpravy › Klávesové zkratky › Obnovit vše na výchozí import vrátí zpět.
 	Don't Import	Neimportovat
 	The keyboard shortcut set was not imported: {error}	Sada klávesových zkratek nebyla importována: {error}
@@ -1643,7 +1639,6 @@
 	Apple Watch 45mm	Apple Watch 45 mm
 	Aqua	Akvamarínové
 	Art & Illustration	Umění a ilustrace
-	ArtCraft	ArtCraft
 	Background Eraser Tool	Nástroj guma pozadí
 	Bevel & Emboss	Úkos a reliéf
 	Blend Mode	Režim prolnutí
@@ -1680,7 +1675,7 @@
 	Current Tool	Aktuální nástroj
 	Custom Shape Tool	Nástroj vlastní tvar
 	Cyans	Azurové
-	Default PhotoCraft Size	Výchozí velikost PhotoCraft
+	Default YEDIT Size	Výchozí velikost YEDIT
 	Delete Workspace	Odstranit pracovní prostor
 	Diamond	Kosočtverec
 	Dimensions:	Rozměry:
@@ -1791,7 +1786,7 @@
 	Pen Tool	Nástroj pero
 	Convert Point Tool	Nástroj převést bod
 	Photo	Fotografie
-	PhotoCraft website	Web PhotoCraft
+	YEDIT website	Web YEDIT
 	Picas	Pica
 	Pillow Emboss	Polštářový reliéf
 	Pixel Replacement	Nahrazení pixelů
@@ -2131,7 +2126,7 @@
 	System Info	Informace o systému
 	More panels	Další panely
 	More documents	Další dokumenty
-	These settings aren't available in PhotoCraft yet.	Tato nastavení zatím v aplikaci PhotoCraft nejsou k dispozici.
+	These settings aren't available in YEDIT yet.	Tato nastavení zatím v aplikaci YEDIT nejsou k dispozici.
 	Graphics	Grafika
 	Reset GPU Backend	Obnovit grafický backend
 	Applies at next launch.	Projeví se při příštím spuštění.
@@ -2264,7 +2259,7 @@
 	Automatic uses GPU acceleration when available and falls back to CPU rendering on errors.	Automatický režim používá dostupnou GPU a při chybě přejde na CPU.
 	Switched to CPU rendering	Přepnuto na vykreslování CPU
 	GPU acceleration could not continue. Your documents are unchanged.	Akcelerace GPU nemohla pokračovat. Dokumenty zůstaly nezměněny.
-	PhotoCraft is using the CPU image compositor. The window may still use your graphics adapter.	PhotoCraft skládá obraz pomocí CPU. Okno může nadále používat grafický adaptér.
+	YEDIT is using the CPU image compositor. The window may still use your graphics adapter.	YEDIT skládá obraz pomocí CPU. Okno může nadále používat grafický adaptér.
 	Retry GPU requires a restart. Save your work first.	Opakování GPU vyžaduje restart. Nejprve uložte práci.
 	Retry GPU tries the graphics processor again now.	Opakování GPU zkusí grafický procesor znovu hned teď.
 	GPU acceleration resumed.	Akcelerace GPU obnovena.
@@ -2513,7 +2508,7 @@ fontWeight	Italic	Kurzíva
 	Color to Alpha…	Barva na alfu…
 	Transparency Threshold	Práh průhlednosti
 	Opacity Threshold	Práh krytí
-	PhotoCraft — Screen Color Picker	PhotoCraft — Výběr barvy obrazovky
+	YEDIT — Screen Color Picker	YEDIT — Výběr barvy obrazovky
 
 	Rasterize svg groups deeper than	Rasterizovat skupiny SVG hlubší než tato úroveň
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 vypne tento práh; skupiny SVG vnořené hlouběji než 100 úrovní se rastrují vždy.
@@ -3281,7 +3276,7 @@ cameraData	Lens	Objektiv
 	Pyramids	Pyramidy
 	Quick Selection	Rychlý výběr
 	Quit	Ukončit
-	Quit PhotoCraft	Ukončit PhotoCraft
+	Quit YEDIT	Ukončit YEDIT
 	Quit {app}	Ukončit {app}
 	RGB	RGB
 	Radial Blur	Radiální rozostření
@@ -3695,9 +3690,9 @@ curves	Smooth	Vyhladit
 	{message} (notes: {n}; {warning})	{message} (poznámky: {n}; {warning})
 @plural	{warning} (+{n} more brush preset warning)|{warning} (+{n} more brush preset warnings)	{warning} (+{n} další upozornění k přednastavení štětců)|{warning} (+{n} další upozornění k přednastavení štětců)|{warning} (+{n} dalších upozornění k přednastavení štětců)
 	Preferences can't be saved	Předvolby nelze uložit
-	PhotoCraft keeps retrying; until a save succeeds, preference changes are lost when it closes.	PhotoCraft se nadále pokouší o uložení; dokud nebude úspěšné, změny předvoleb se při zavření ztratí.
+	YEDIT keeps retrying; until a save succeeds, preference changes are lost when it closes.	YEDIT se nadále pokouší o uložení; dokud nebude úspěšné, změny předvoleb se při zavření ztratí.
 	GPU retry scheduled	Naplánován další pokus o použití GPU
-	Save your work and restart PhotoCraft to retry GPU acceleration. CPU rendering remains active for this session.	Chcete-li znovu zkusit akceleraci GPU, uložte práci a restartujte PhotoCraft. V této relaci zůstane aktivní vykreslování pomocí CPU.
+	Save your work and restart YEDIT to retry GPU acceleration. CPU rendering remains active for this session.	Chcete-li znovu zkusit akceleraci GPU, uložte práci a restartujte YEDIT. V této relaci zůstane aktivní vykreslování pomocí CPU.
 	GPU device was lost; using the CPU renderer.	Spojení se zařízením GPU bylo ztraceno; používá se vykreslování pomocí CPU.
 	GPU error; using the CPU renderer.	Chyba GPU; používá se vykreslování pomocí CPU.
 @plural	{what} with {n} warning|{what} with {n} warnings	{what} ({n} upozornění)|{what} ({n} upozornění)|{what} ({n} upozornění)
@@ -3776,7 +3771,6 @@ navigator	Zoom	Zvětšení
 	on	zapnuto
 	off	vypnuto
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Tato úprava ({key}) se uchovává v importované podobě a zatím ji nelze měnit.
-	Join the ArtCraft Discord ({url})	Přidejte se na Discord ArtCraft ({url})
 	{index} of {total}	{index} z {total}
 @plural	{n} step|{n} steps	{n} krok|{n} kroky|{n} kroků
 	{shortcut} assigned.	Zkratka {shortcut} přiřazena.
@@ -3823,7 +3817,7 @@ navigator	Zoom	Zvětšení
 	{name} (Photoshop)	{name} (Photoshop)
 	{message} ({note})	{message} ({note})
 @plural	Loaded {n} action from {file}|Loaded {n} actions from {file}	Načtena {n} akce ze souboru {file}|Načteny {n} akce ze souboru {file}|Načteno {n} akcí ze souboru {file}
-@plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} krok zatím nemá v PhotoCraftu obdobu|{n} kroky zatím nemají v PhotoCraftu obdobu|{n} kroků zatím nemá v PhotoCraftu obdobu
+@plural	{n} step has no YEDIT equivalent yet|{n} steps have no YEDIT equivalent yet	{n} krok zatím nemá v YEDITu obdobu|{n} kroky zatím nemají v YEDITu obdobu|{n} kroků zatím nemá v YEDITu obdobu
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	Uložena {n} akce do souboru {file}|Uloženy {n} akce do souboru {file}|Uloženo {n} akcí do souboru {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	Vynechán {n} krok bez obdoby v Photoshopu|Vynechány {n} kroky bez obdoby v Photoshopu|Vynecháno {n} kroků bez obdoby v Photoshopu
 
@@ -3851,19 +3845,19 @@ navigator	Zoom	Zvětšení
 	Sent to {printer}	Odesláno do {printer}
 	set in Print Settings…	nastavuje se v nastavení tisku…
 	ICO is limited to 256 × 256 pixels	ICO je omezen na 256 × 256 pixelů
-# PhotoCraft release checks.
+# YEDIT release checks.
 	Check for Updates…	Zkontrolovat aktualizace…
-	PhotoCraft Updates	Aktualizace PhotoCraft
+	YEDIT Updates	Aktualizace YEDIT
 	Checking for updates…	Kontrola aktualizací…
 	Open the release page to choose an installer for your system.	Otevřete stránku vydání a vyberte instalační program pro svůj systém.
 	Open Download Page	Otevřít stránku ke stažení
-	PhotoCraft is up to date.	PhotoCraft je aktuální.
+	YEDIT is up to date.	YEDIT je aktuální.
 	Could not check for updates.	Aktualizace se nepodařilo zkontrolovat.
 	Updates have not been checked yet.	Aktualizace ještě nebyly zkontrolovány.
 	Check Again	Zkontrolovat znovu
 	Automatically Check for Updates	Automaticky kontrolovat aktualizace
 	Installed version: {version}	Nainstalovaná verze: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} je k dispozici.
+	YEDIT {version} is available.	YEDIT {version} je k dispozici.
 # History panel › History Brush source (#2966)
 	Paints from the History panel's source state	Maluje ze zdrojového stavu panelu Historie
 	Sets the source for the history brush	Nastaví zdroj pro štětec historie
@@ -3899,12 +3893,12 @@ navigator	Zoom	Zvětšení
 	Bicubic Smoother	Bikubická hladší
 	Bicubic Sharper	Bikubická ostřejší
 	Pasting from other apps is unavailable	Vkládání z jiných aplikací není k dispozici
-	PhotoCraft can't reach the system clipboard in this session. On Wayland, a Flatpak sandbox hides the protocol that images from other apps are read through.	PhotoCraft v této relaci nemá přístup k systémové schránce. Na Waylandu sandbox Flatpaku skrývá protokol, přes který se čtou obrázky z jiných aplikací.
-	To paste from other apps, start PhotoCraft under XWayland: `{command}`	Chcete-li vkládat z jiných aplikací, spusťte PhotoCraft pod XWaylandem: `{command}`
-	Nothing to paste: PhotoCraft can't read the system clipboard here	Není co vložit: PhotoCraft zde nemůže číst systémovou schránku
+	YEDIT can't reach the system clipboard in this session. On Wayland, a Flatpak sandbox hides the protocol that images from other apps are read through.	YEDIT v této relaci nemá přístup k systémové schránce. Na Waylandu sandbox Flatpaku skrývá protokol, přes který se čtou obrázky z jiných aplikací.
+	To paste from other apps, start YEDIT under XWayland: `{command}`	Chcete-li vkládat z jiných aplikací, spusťte YEDIT pod XWaylandem: `{command}`
+	Nothing to paste: YEDIT can't read the system clipboard here	Není co vložit: YEDIT zde nemůže číst systémovou schránku
 	Delete this set	Smazat tuto sadu
 	New Set…	Nová sada…
-	PhotoCraft Defaults	Výchozí PhotoCraft
+	YEDIT Defaults	Výchozí YEDIT
 	Save a list of these shortcuts as a web page	Uložit seznam těchto zkratek jako webovou stránku
 	Save the changes to this set	Uložit změny do této sady
 	Save these shortcuts as a .kys file	Uložit tyto zkratky jako soubor .kys

@@ -2,10 +2,10 @@
 
 use std::sync::Arc;
 
-use photocraft_color::{ColorMode, SampleType};
-use photocraft_doc::{Document, Layer, LayerContent, LayerId, Size, SmartContentsId, SmartObject, SmartSource};
-use photocraft_format::{LoadOptions, SaveOptions, load_from_bytes, load_from_bytes_with, save_to_bytes, zip};
-use photocraft_geom::Affine;
+use yedit_color::{ColorMode, SampleType};
+use yedit_doc::{Document, Layer, LayerContent, LayerId, Size, SmartContentsId, SmartObject, SmartSource};
+use yedit_format::{LoadOptions, SaveOptions, load_from_bytes, load_from_bytes_with, save_to_bytes, zip};
+use yedit_geom::Affine;
 
 fn embedded(bytes: &Arc<Vec<u8>>) -> Layer {
     Layer::new(

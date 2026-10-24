@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Build and package PhotoCraft for Linux (<arch> is x86_64, aarch64 or riscv64):
+# Build and package YEDIT for Linux (<arch> is x86_64, aarch64 or riscv64):
 #
-#   $DIST/photocraft-<version>-linux-<arch>.AppImage  any distro with glibc >= the build host's
-#   $DIST/photocraft-<version>-linux-<arch>.AppImage.zsync  delta updates (needs zsyncmake)
-#   $DIST/photocraft-<version>-linux-<arch>.deb       Debian, Ubuntu, Mint, Pop!_OS, ...
-#   $DIST/photocraft-<version>-linux-<arch>.rpm       Fedora, openSUSE, RHEL, ...
-#   $DIST/photocraft-<version>-linux-<arch>.tar.gz    plain FHS-style tree (bin/, share/)
+#   $DIST/yedit-<version>-linux-<arch>.AppImage  any distro with glibc >= the build host's
+#   $DIST/yedit-<version>-linux-<arch>.AppImage.zsync  delta updates (needs zsyncmake)
+#   $DIST/yedit-<version>-linux-<arch>.deb       Debian, Ubuntu, Mint, Pop!_OS, ...
+#   $DIST/yedit-<version>-linux-<arch>.rpm       Fedora, openSUSE, RHEL, ...
+#   $DIST/yedit-<version>-linux-<arch>.tar.gz    plain FHS-style tree (bin/, share/)
 #
 # Usage: packaging/linux/package.sh [--skip-build] [--formats "appimage deb rpm tar"]
 #
@@ -23,7 +23,7 @@ set -euo pipefail
 HERE="$ROOT/packaging/linux"
 # shellcheck source=verified-download.sh
 . "$HERE/verified-download.sh"
-APP_ID=ai.storyteller.photocraft
+APP_ID=com.fesilabs.yedit
 
 SKIP_BUILD=0
 FORMATS="appimage deb rpm tar"
@@ -43,16 +43,16 @@ case "$ARCH" in
   aarch64 | arm64) ARCH=aarch64; DEB_ARCH=arm64 ;;
   *) echo "unsupported architecture $ARCH" >&2; exit 2 ;;
 esac
-export PHOTOCRAFT_MAINTAINER="${PHOTOCRAFT_MAINTAINER:-PhotoCraft maintainers <photocraft@storyteller.ai>}"
-BASENAME="photocraft-$VERSION-linux-$ARCH"
+export YEDIT_MAINTAINER="${YEDIT_MAINTAINER:-FESI Labs <yedit@fesilabs.invalid>}"
+BASENAME="yedit-$VERSION-linux-$ARCH"
 
-echo "==> PhotoCraft $VERSION for Linux $ARCH ($FORMATS)"
+echo "==> YEDIT $VERSION for Linux $ARCH ($FORMATS)"
 
 if [[ "$SKIP_BUILD" = 0 ]]; then
   if [[ -n "${CROSS_TARGET:-}" ]]; then
-    (cd "$ROOT" && cargo build --release --locked -p photocraft -p photocraft-cli --features heif --target "$CROSS_TARGET")
+    (cd "$ROOT" && cargo build --release --locked -p yedit -p yedit-cli --features heif --target "$CROSS_TARGET")
   else
-    (cd "$ROOT" && cargo build --release --locked -p photocraft -p photocraft-cli --features heif)
+    (cd "$ROOT" && cargo build --release --locked -p yedit -p yedit-cli --features heif)
   fi
 fi
 BIN="$CARGO_TARGET_DIR/${CROSS_TARGET:+$CROSS_TARGET/}release"
@@ -61,18 +61,18 @@ STAGE="$WORK/root"
 rm -rf "$WORK"
 
 # ---- stage an FHS tree (shared by every format) -------------------------------------------------
-install -Dm755 "$BIN/photocraft" "$STAGE/usr/bin/photocraft"
-install -Dm755 "$BIN/photocraft-cli" "$STAGE/usr/bin/photocraft-cli"
-"${CROSS_COMPILE:-}strip" "$STAGE/usr/bin/photocraft" "$STAGE/usr/bin/photocraft-cli" 2>/dev/null || true
+install -Dm755 "$BIN/yedit" "$STAGE/usr/bin/yedit"
+install -Dm755 "$BIN/yedit-cli" "$STAGE/usr/bin/yedit-cli"
+"${CROSS_COMPILE:-}strip" "$STAGE/usr/bin/yedit" "$STAGE/usr/bin/yedit-cli" 2>/dev/null || true
 install -Dm644 "$HERE/$APP_ID.desktop" "$STAGE/usr/share/applications/$APP_ID.desktop"
 install -Dm644 "$HERE/$APP_ID.mime.xml" "$STAGE/usr/share/mime/packages/$APP_ID.xml"
 mkdir -p "$STAGE/usr/share/metainfo"
-sed -e "s/@VERSION@/$VERSION/g" -e "s/@DATE@/$PHOTOCRAFT_BUILD_DATE/g" \
+sed -e "s/@VERSION@/$VERSION/g" -e "s/@DATE@/$YEDIT_BUILD_DATE/g" \
   "$HERE/$APP_ID.metainfo.xml.in" >"$STAGE/usr/share/metainfo/$APP_ID.metainfo.xml"
 mkdir -p "$STAGE/usr/share/icons"
 cp -R "$ROOT/assets/app-icon/hicolor" "$STAGE/usr/share/icons/"
-mkdir -p "$STAGE/usr/share/doc/photocraft"
-copy_docs "$STAGE/usr/share/doc/photocraft"
+mkdir -p "$STAGE/usr/share/doc/yedit"
+copy_docs "$STAGE/usr/share/doc/yedit"
 
 if command -v desktop-file-validate >/dev/null; then
   desktop-file-validate "$STAGE/usr/share/applications/$APP_ID.desktop"
@@ -105,7 +105,7 @@ fi
 
 # ---- AppImage -----------------------------------------------------------------------------------
 if has appimage; then
-  APPDIR="$WORK/PhotoCraft.AppDir"
+  APPDIR="$WORK/YEDIT.AppDir"
   cp -R "$STAGE" "$APPDIR"
   mv "$APPDIR/usr/share/doc" "$WORK/doc-unused"
   # AppRun is a script, not a symlink: it installs the .desktop entry and icons into
@@ -158,14 +158,18 @@ if has appimage; then
   # Update information (#349): AppImageUpdate, AppImageLauncher and the like read it from the
   # file and fetch only the blocks that changed in a newer release, through the .zsync published
   # next to each AppImage on GitHub Releases. `latest` is the newest published release that is
-  # not a pre-release. A fork's builds point at its own releases through GITHUB_REPOSITORY.
-  REPO="${GITHUB_REPOSITORY:-storytold/photocraft}"
-  UPDATE_INFO="gh-releases-zsync|${REPO%%/*}|${REPO#*/}|latest|photocraft-*-linux-$ARCH.AppImage.zsync"
+  # not a pre-release. Builds point at their own releases through GITHUB_REPOSITORY; without it
+  # (local YEDIT builds) the AppImage carries no update information.
+  UPDATE_ARGS=()
+  if [[ -n "${GITHUB_REPOSITORY:-}" ]]; then
+    REPO="$GITHUB_REPOSITORY"
+    UPDATE_ARGS=(-u "gh-releases-zsync|${REPO%%/*}|${REPO#*/}|latest|yedit-*-linux-$ARCH.AppImage.zsync")
+  fi
   # Extract-and-run: works without FUSE (containers, CI). The output embeds the static runtime,
   # so users don't need libfuse2 either. With zsyncmake on the host (CI installs the zsync
   # package) appimagetool also writes the .zsync, into its working directory, hence the cd.
   (cd "$DIST" && ARCH="$ARCH" APPIMAGE_EXTRACT_AND_RUN=1 "$TOOL" --no-appstream \
-    --runtime-file "$RUNTIME" -u "$UPDATE_INFO" "$APPDIR" "$OUT")
+    --runtime-file "$RUNTIME" "${UPDATE_ARGS[@]}" "$APPDIR" "$OUT")
   echo "wrote $OUT"
   if [[ -s "$OUT.zsync" ]]; then
     echo "wrote $OUT.zsync"
@@ -175,9 +179,9 @@ if has appimage; then
 fi
 
 if [[ -z "${CROSS_TARGET:-}" ]]; then
-  "$STAGE/usr/bin/photocraft-cli" --version
+  "$STAGE/usr/bin/yedit-cli" --version
 elif [[ -n "${EMULATOR:-}" ]]; then
-  "$EMULATOR" "$STAGE/usr/bin/photocraft-cli" --version
+  "$EMULATOR" "$STAGE/usr/bin/yedit-cli" --version
 fi
 echo "==> done"
 ls -lh "$DIST"

@@ -1,11 +1,11 @@
 //! End-to-end timing of the smart selection commands (including sampling the layer and storing
 //! the selection / layer) on a 6016×6016 8-bit document: a textured disc on a noisy background.
-//! `cargo run --release -p photocraft-engine --example bench_smartselect_cmds [size]`
+//! `cargo run --release -p yedit-engine --example bench_smartselect_cmds [size]`
 use std::time::Instant;
 
-use photocraft_algo::segment::Rng;
-use photocraft_engine::Session;
-use photocraft_geom::Rect;
+use yedit_algo::segment::Rng;
+use yedit_engine::Session;
+use yedit_geom::Rect;
 use serde_json::json;
 
 fn main() {

@@ -1,4 +1,4 @@
-//! Crash-safe file replacement: the one way PhotoCraft writes a document to disk.
+//! Crash-safe file replacement: the one way YEDIT writes a document to disk.
 //!
 //! [`atomic_write`] never truncates the destination. It writes a temporary file in the **same
 //! directory**, flushes it to stable storage (`sync_all`), renames it over the destination and,
@@ -390,7 +390,7 @@ pub fn temp_name(file: &str) -> String {
     let n = COUNTER.fetch_add(1, Ordering::Relaxed);
     // Keep the name short: a long file name plus the suffix must stay under NAME_MAX.
     let stem: String = file.chars().take(64).collect();
-    format!(".{stem}.{}-{n}.pcsave.tmp", std::process::id())
+    format!(".{stem}.{}-{n}.ysave.tmp", std::process::id())
 }
 
 fn context(e: io::Error, msg: String) -> io::Error {

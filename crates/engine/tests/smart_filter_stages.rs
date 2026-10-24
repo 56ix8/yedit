@@ -2,9 +2,9 @@
 //! unit tests, so these tests can tell a cached stage from a re-render.
 use std::sync::Arc;
 
-use photocraft_doc::LayerContent;
-use photocraft_engine::{Session, smart_cmds};
-use photocraft_raster::Surface;
+use yedit_doc::LayerContent;
+use yedit_engine::{Session, smart_cmds};
+use yedit_raster::Surface;
 use serde_json::json;
 
 fn rendered(s: &Session) -> Surface {

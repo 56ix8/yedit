@@ -2,7 +2,7 @@ name: CI
 
 # Quality gates for every push to main and every pull request. The Linux gate runs through the
 # suite's shared gate workflow in craft-common-actions (`cargo xtask ci`); the Windows legs, the
-# test variant and the corpus, web and fuzz jobs are PhotoCraft's own.
+# test variant and the corpus, web and fuzz jobs are YEDIT's own.
 on:
   push:
     branches: [main]
@@ -28,8 +28,8 @@ env:
   RUST_BACKTRACE: 1
   # No test or fuzz run may print a page: the engine refuses to spool, and if something ever
   # bypasses that, lp fails loudly on a printer that does not exist.
-  PHOTOCRAFT_NO_PRINT: "1"
-  LPDEST: photocraft-no-such-printer
+  YEDIT_NO_PRINT: "1"
+  LPDEST: yedit-no-such-printer
 
 # A newer push to a PR branch cancels its older run. Every push to main gets a run of its own that
 # is never cancelled, so each state of main is checked to the end. Adding any label but `full-ci`
@@ -102,7 +102,7 @@ jobs:
           # The browser build (a fat-LTO wasm build) runs only when something it compiles or
           # packages changed: the web app and its packaging, crate sources and manifests (the web
           # build compiles nearly every crate), the workspace manifests and this workflow.
-          if git diff --name-only "$BASE" HEAD | grep -Eq '^(apps/photocraft-web(-boot)?/|packaging/web/|packaging/env\.sh$|crates/[^/]+/(src/|Cargo\.toml$|build\.rs$)|Cargo\.(toml|lock)$|rust-toolchain(\.toml)?$|\.github/workflows/ci\.yml$)'; then
+          if git diff --name-only "$BASE" HEAD | grep -Eq '^(apps/yedit-web(-boot)?/|packaging/web/|packaging/env\.sh$|crates/[^/]+/(src/|Cargo\.toml$|build\.rs$)|Cargo\.(toml|lock)$|rust-toolchain(\.toml)?$|\.github/workflows/ci\.yml$)'; then
             echo "web=true" >> "$GITHUB_OUTPUT"
           else
             echo "web=false" >> "$GITHUB_OUTPUT"
@@ -129,8 +129,8 @@ jobs:
       # Cargo.toml's dev profile already keeps line tables only.
       dev-debug: ""
       env: |
-        PHOTOCRAFT_NO_PRINT=1
-        LPDEST=photocraft-no-such-printer
+        YEDIT_NO_PRINT=1
+        LPDEST=yedit-no-such-printer
       timeout-minutes: 100
       # fmt, clippy, layers, scorecard, tests, panic_hunt, doctests and the wasm32 check, with
       # `--locked --features heif`, then the missing-translations report (xtask/src/main.rs).
@@ -262,7 +262,7 @@ jobs:
           tool: cargo-nextest@0.9.149
 
       - name: Test without heif
-        run: cargo nextest run -p photocraft-heif -p photocraft-codecs -p photocraft-io --locked --profile ci
+        run: cargo nextest run -p yedit-heif -p yedit-codecs -p yedit-io --locked --profile ci
 
   corpus:
     if: github.event.action != 'labeled' || github.event.label.name == 'full-ci'

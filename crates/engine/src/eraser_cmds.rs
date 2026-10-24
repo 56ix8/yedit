@@ -7,12 +7,12 @@
 //! layers with locked transparency; the Background Eraser refuses them. Both respect the selection,
 //! work in the layer's own colour model and depth, and are one undo step per click / stroke.
 
-use photocraft_algo::selection as sel;
-use photocraft_doc::{Document, Layer, LayerContent, LayerId};
-use photocraft_geom::Rect;
-use photocraft_paint::Stroke;
-use photocraft_paint::bg_erase::{BgEraseSettings, apply_background_eraser, background_eraser_effect, background_eraser_stroke};
-use photocraft_paint::replace::{Limits, Sampling};
+use yedit_algo::selection as sel;
+use yedit_doc::{Document, Layer, LayerContent, LayerId};
+use yedit_geom::Rect;
+use yedit_paint::Stroke;
+use yedit_paint::bg_erase::{BgEraseSettings, apply_background_eraser, background_eraser_effect, background_eraser_stroke};
+use yedit_paint::replace::{Limits, Sampling};
 use serde_json::{Value, json};
 
 use crate::commands::CommandSpec;
@@ -111,8 +111,8 @@ fn magic_eraser(s: &mut Session, p: &Value) -> Result<Value> {
         let surf = l.surface_mut().ok_or_else(|| bad(CMD, "not a pixel layer"))?;
         let fmt = surf.format();
         // Locked transparency: paint the background colour instead (Photoshop).
-        let lock_color = lock.then(|| photocraft_raster::from_rgba(&fmt, [bg[0], bg[1], bg[2], 1.0]));
-        Ok(photocraft_algo::erase::magic_erase(surf, &region, opacity, selection.as_ref(), lock_color.as_deref()))
+        let lock_color = lock.then(|| yedit_raster::from_rgba(&fmt, [bg[0], bg[1], bg[2], 1.0]));
+        Ok(yedit_algo::erase::magic_erase(surf, &region, opacity, selection.as_ref(), lock_color.as_deref()))
     })?;
     Ok(damage(s, dmg, true))
 }
@@ -173,7 +173,7 @@ pub fn live_background_eraser(s: &Session, p: &Value) -> Result<crate::retouch_c
     crate::retouch_cmds::LiveDab::with_effect_on(doc, CMD, &json!({}), stroke, Some(id), 0, true, |pre| match background_eraser_effect(pre, &bs) {
         Some(effect) => Box::new(effect),
         // No alpha: the commit erases nothing either.
-        None => Box::new(|_: &mut photocraft_paint::retouch::Region, _: &photocraft_paint::retouch::Footprint| {}),
+        None => Box::new(|_: &mut yedit_paint::retouch::Region, _: &yedit_paint::retouch::Footprint| {}),
     })?
     .with_tail_preview()
 }

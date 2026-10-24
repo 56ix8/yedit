@@ -1,5 +1,5 @@
-use photocraft_doc::{LayerId, SliceOrigin};
-use photocraft_engine::Session;
+use yedit_doc::{LayerId, SliceOrigin};
+use yedit_engine::Session;
 use serde_json::json;
 
 fn art() -> (Session, LayerId) {

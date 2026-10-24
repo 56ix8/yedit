@@ -1,6 +1,6 @@
 [package]
-name = "photocraft-io"
-description = "Import/export between photocraft documents and PSD/PSB and flat raster formats"
+name = "yedit-io"
+description = "Import/export between yedit documents and PSD/PSB and flat raster formats"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -12,25 +12,25 @@ workspace = true
 [features]
 # Real-file corpus tests (opt-in; `cargo xtask test-corpus`). Fail when the corpus is missing.
 corpus = []
-# HEIC/HEIF decode (forwarded to photocraft-codecs; see its `heif` feature).
-heif = ["photocraft-codecs/heif"]
+# HEIC/HEIF decode (forwarded to yedit-codecs; see its `heif` feature).
+heif = ["yedit-codecs/heif"]
 
 [dependencies]
-photocraft-geom = { workspace = true }
-photocraft-color = { workspace = true }
-photocraft-cms = { workspace = true }
-photocraft-raster = { workspace = true }
-photocraft-doc = { workspace = true }
-photocraft-compose = { workspace = true }
-photocraft-algo = { workspace = true }
-photocraft-psd = { workspace = true }
-photocraft-codecs = { workspace = true }
-photocraft-raw = { workspace = true }
-photocraft-affinity = { workspace = true }
-photocraft-text = { workspace = true }
-photocraft-paint = { workspace = true }
-photocraft-vector = { workspace = true }
-photocraft-format = { path = "../format" }
+yedit-geom = { workspace = true }
+yedit-color = { workspace = true }
+yedit-cms = { workspace = true }
+yedit-raster = { workspace = true }
+yedit-doc = { workspace = true }
+yedit-compose = { workspace = true }
+yedit-algo = { workspace = true }
+yedit-psd = { workspace = true }
+yedit-codecs = { workspace = true }
+yedit-raw = { workspace = true }
+yedit-affinity = { workspace = true }
+yedit-text = { workspace = true }
+yedit-paint = { workspace = true }
+yedit-vector = { workspace = true }
+yedit-format = { path = "../format" }
 craft-docpath = { workspace = true }
 thiserror = { workspace = true }
 serde_json = { workspace = true }
@@ -50,9 +50,9 @@ resvg = { version = "0.45", default-features = false, features = ["text", "raste
 
 [dev-dependencies]
 crc32fast = "1.5"
-photocraft-affinity = { workspace = true, features = ["synth"] }
+yedit-affinity = { workspace = true, features = ["synth"] }
 flate2 = { workspace = true }
-photocraft-psd = { workspace = true, features = ["testgen"] }
-photocraft-raw = { workspace = true, features = ["testgen"] }
-photocraft-testkit = { workspace = true }
+yedit-psd = { workspace = true, features = ["testgen"] }
+yedit-raw = { workspace = true, features = ["testgen"] }
+yedit-testkit = { workspace = true }
 proptest = { workspace = true }

@@ -12,7 +12,7 @@
 # Clean-room: every entry was written from the plain meaning of the English label using ordinary
 # German image-editing vocabulary (Ebene, Maske, Auswahl, Weichzeichnen ...). No proprietary
 # localisation resource, string table or product UI was consulted or copied; add entries the same
-# way. Product and technology names (PhotoCraft, ArtCraft, OpenType, CMYK, Lab ...) stay in Latin
+# way. Product and technology names (YEDIT, PhotoCraft, OpenType, CMYK, Lab ...) stay in Latin
 # letters; the trailing "…" of dialog commands is kept. Plural rule: one|other (n != 1 -> other).
 
 # Layer Mask Display Options (the layer mask rubylith's colour and opacity)
@@ -790,11 +790,9 @@
 	Timeline	Zeitleiste
 	Tool Presets	Werkzeugvorgaben
 	Tools	Werkzeuge
-	About PhotoCraft	Über PhotoCraft
-	PhotoCraft Website	PhotoCraft-Website
-	PhotoCraft on GitHub	PhotoCraft auf GitHub
-	ArtCraft Website	ArtCraft-Website
-	Join the ArtCraft Discord…	ArtCraft-Discord beitreten…
+	About YEDIT	Über YEDIT
+	YEDIT Website	YEDIT-Website
+	YEDIT on GitHub	YEDIT auf GitHub
 	Report an Issue…	Problem melden…
 	WIA Support…	WIA-Unterstützung…
 	Apply	Anwenden
@@ -846,7 +844,7 @@
 	All Caps	Großbuchstaben
 	All Slices	Alle Slices
 	All User Slices	Alle Benutzer-Slices
-	All shortcuts reset to PhotoCraft defaults.	Alle Kurzbefehle wurden auf die PhotoCraft-Standards zurückgesetzt.
+	All shortcuts reset to YEDIT defaults.	Alle Kurzbefehle wurden auf die YEDIT-Standards zurückgesetzt.
 	Alt	Alt
 	Always use pressure for opacity	Druck immer für Deckkraft verwenden
 	Always use pressure for size	Druck immer für Größe verwenden
@@ -1080,7 +1078,6 @@
 	Diffusion	Diffusion
 	Discard the embedded profile (don't color manage)	Eingebettetes Profil verwerfen (keine Farbverwaltung)
 	Discontiguous	Nicht benachbart
-	Discord	Discord
 	Dismiss	Ausblenden
 	Display P3	Display P3
 	Display Text	Text anzeigen
@@ -1100,8 +1097,8 @@
 	Drop an image or PSD anywhere to open it.	Ziehe ein Bild oder PSD an eine beliebige Stelle, um es zu öffnen.
 	Native file drag-and-drop is unavailable	Natives Ziehen und Ablegen von Dateien ist nicht verfügbar
 	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or copy the image in your file manager and paste it with {paste}.	Natives Ziehen und Ablegen von Dateien wird unter Wayland noch nicht unterstützt. Nutze Datei › Öffnen oder kopiere das Bild im Dateimanager und füge es mit {paste} ein.
-	To drop files, start PhotoCraft under XWayland: `{command}`	Um Dateien abzulegen, starte PhotoCraft unter XWayland: `{command}`
-	Or set Preferences › Performance › Linux display server to X11: PhotoCraft then always starts under XWayland.	Oder stelle Voreinstellungen › Leistung › Linux-Anzeigeserver auf X11: PhotoCraft startet dann immer unter XWayland.
+	To drop files, start YEDIT under XWayland: `{command}`	Um Dateien abzulegen, starte YEDIT unter XWayland: `{command}`
+	Or set Preferences › Performance › Linux display server to X11: YEDIT then always starts under XWayland.	Oder stelle Voreinstellungen › Leistung › Linux-Anzeigeserver auf X11: YEDIT startet dann immer unter XWayland.
 	Edit › Paste	Bearbeiten › Einfügen
 	Duplicate Layers…	Ebenen duplizieren…
 	Duplicate style	Stil duplizieren
@@ -1215,7 +1212,6 @@
 	Invert All	Alle invertieren
 	Invert has no settings.	Invertieren hat keine Einstellungen.
 	Italic	Kursiv
-	Join us on Discord	Tritt unserem Discord bei
 	Justify all	Alles im Blocksatz
 	Justify last centered	Letzte Zeile zentriert
 	Justify last left	Letzte Zeile links
@@ -1351,9 +1347,9 @@
 	Perspective Warp is not active	Perspektivische Verkrümmung ist nicht aktiv
 	Perspective Warp: draw planes along the image's perspective, then switch to Warp	Perspektivische Verkrümmung: zeichne Flächen entlang der Bildperspektive, wechsle dann zu Verkrümmen
 	Photo Filter	Foto-Filter
-	PhotoCraft	PhotoCraft
-	PhotoCraft Manages Colors	PhotoCraft verwaltet die Farben
-	PhotoCraft — an open-source, native image editor written in Rust.	PhotoCraft — ein nativer Open-Source-Bildeditor, geschrieben in Rust.
+	YEDIT	YEDIT
+	YEDIT Manages Colors	YEDIT verwaltet die Farben
+	YEDIT — an open-source, native image editor written in Rust.	YEDIT — ein nativer Open-Source-Bildeditor, geschrieben in Rust.
 	Pin Depth:	Pin-Tiefe:
 	Pixel Length:	Pixel-Länge:
 	Pixels/Centimeter	Pixel/Zentimeter
@@ -1429,11 +1425,11 @@
 	Import Shortcuts…	Tastaturbefehle importieren…
 	Load a keyboard shortcut set saved as .kys	Einen als .kys gespeicherten Tastaturbefehlssatz laden
 	Imported {n} shortcuts from {file}. Click OK to keep them.	{n} Tastaturbefehle aus {file} importiert. Mit OK übernehmen.
-	{n} commands are not in PhotoCraft.	{n} Befehle gibt es in PhotoCraft nicht.
+	{n} commands are not in YEDIT.	{n} Befehle gibt es in YEDIT nicht.
 	Keyboard shortcuts imported	Tastaturbefehle importiert
 	Your keyboard shortcut set {set} is in use here: {n} shortcuts differ from the defaults. Edit › Keyboard Shortcuts shows them; Reset All to Defaults undoes this.	Dein Tastaturbefehlssatz {set} wird hier verwendet: {n} Tastaturbefehle weichen von den Standardwerten ab. Bearbeiten › Tastaturbefehle zeigt sie; Alles auf Standardwerte zurücksetzen macht es rückgängig.
 	Import keyboard shortcuts?	Tastaturbefehle importieren?
-	PhotoCraft found your keyboard shortcut set {set} from another image editor on this computer: {n} of its shortcuts differ from PhotoCraft's. Import it?	PhotoCraft hat auf diesem Computer deinen Tastaturbefehlssatz {set} aus einem anderen Bildbearbeitungsprogramm gefunden: {n} seiner Tastaturbefehle weichen von denen in PhotoCraft ab. Importieren?
+	YEDIT found your keyboard shortcut set {set} from another image editor on this computer: {n} of its shortcuts differ from YEDIT's. Import it?	YEDIT hat auf diesem Computer deinen Tastaturbefehlssatz {set} aus einem anderen Bildbearbeitungsprogramm gefunden: {n} seiner Tastaturbefehle weichen von denen in YEDIT ab. Importieren?
 	Edit › Keyboard Shortcuts › Reset All to Defaults undoes an import.	Bearbeiten › Tastaturbefehle › Alles auf Standardwerte zurücksetzen macht einen Import rückgängig.
 	Don't Import	Nicht importieren
 	The keyboard shortcut set was not imported: {error}	Der Tastaturbefehlssatz wurde nicht importiert: {error}
@@ -1622,7 +1618,6 @@
 	Apple Watch 45mm	Apple Watch 45 mm
 	Aqua	Aqua
 	Art & Illustration	Kunst & Illustration
-	ArtCraft	ArtCraft
 	Background Eraser Tool	Hintergrund-Radiergummi-Werkzeug
 	Bevel & Emboss	Abgeflachte Kante & Relief
 	Blend Mode	Fusionsmodus
@@ -1658,7 +1653,7 @@
 	Current Tool	Aktuelles Werkzeug
 	Custom Shape Tool	Werkzeug für benutzerdefinierte Formen
 	Cyans	Cyantöne
-	Default PhotoCraft Size	Standard-PhotoCraft-Größe
+	Default YEDIT Size	Standard-YEDIT-Größe
 	Delete Workspace	Arbeitsbereich löschen
 	Diamond	Raute
 	Dimensions:	Abmessungen:
@@ -1769,7 +1764,7 @@
 	Pen Tool	Stift-Werkzeug
 	Convert Point Tool	Punkt-umwandeln-Werkzeug
 	Photo	Foto
-	PhotoCraft website	PhotoCraft-Website
+	YEDIT website	YEDIT-Website
 	Picas	Pica
 	Pillow Emboss	Polsterrelief
 	Pixel Replacement	Pixelersatz
@@ -2101,7 +2096,7 @@
 	System Info	Systeminformationen
 	More panels	Weitere Bedienfelder
 	More documents	Weitere Dokumente
-	These settings aren't available in PhotoCraft yet.	Diese Einstellungen gibt es in PhotoCraft noch nicht.
+	These settings aren't available in YEDIT yet.	Diese Einstellungen gibt es in YEDIT noch nicht.
 	Graphics	Grafik
 	Reset GPU Backend	GPU-Backend zurücksetzen
 	Applies at next launch.	Wird beim nächsten Start angewendet.
@@ -2315,7 +2310,7 @@
 	Automatic uses GPU acceleration when available and falls back to CPU rendering on errors.	Automatisch nutzt GPU-Beschleunigung, wenn verfügbar, und fällt bei Fehlern auf CPU-Rendering zurück.
 	Switched to CPU rendering	Auf CPU-Rendering umgeschaltet
 	GPU acceleration could not continue. Your documents are unchanged.	GPU-Beschleunigung konnte nicht fortgesetzt werden. Deine Dokumente sind unverändert.
-	PhotoCraft is using the CPU image compositor. The window may still use your graphics adapter.	PhotoCraft nutzt den CPU-Bildkompositor. Das Fenster kann weiterhin deinen Grafikadapter verwenden.
+	YEDIT is using the CPU image compositor. The window may still use your graphics adapter.	YEDIT nutzt den CPU-Bildkompositor. Das Fenster kann weiterhin deinen Grafikadapter verwenden.
 	Retry GPU requires a restart. Save your work first.	GPU erneut versuchen erfordert einen Neustart. Speichere zuerst deine Arbeit.
 	Retry GPU tries the graphics processor again now.	GPU erneut versuchen versucht es sofort wieder mit dem Grafikprozessor.
 	GPU acceleration resumed.	GPU-Beschleunigung wieder aktiv.
@@ -2555,7 +2550,7 @@ fontWeight	Italic	Kursiv
 	Color to Alpha…	Farbe zu Alpha…
 	Transparency Threshold	Transparenz-Schwellenwert
 	Opacity Threshold	Deckkraft-Schwellenwert
-	PhotoCraft — Screen Color Picker	PhotoCraft — Bildschirmfarbenauswahl
+	YEDIT — Screen Color Picker	YEDIT — Bildschirmfarbenauswahl
 
 	Rasterize svg groups deeper than	SVG-Gruppen ab dieser Tiefe rastern
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 schaltet diese Schwelle aus; SVG-Gruppen, die tiefer als 100 Ebenen verschachtelt sind, werden immer gerastert.
@@ -2838,7 +2833,6 @@ curves	Smooth	Glätten
 	Light Gray	Hellgrau
 	Stop	Stopp
 # Status messages, system info and tool names
-	Join the ArtCraft Discord ({url})	Dem ArtCraft-Discord beitreten ({url})
 	Nothing to paste: the clipboard holds no image	Nichts einzufügen: Die Zwischenablage enthält kein Bild
 	Graphics adapter: {adapter}	Grafikadapter: {adapter}
 	Backend: {backend} ({type})	Backend: {backend} ({type})
@@ -3225,7 +3219,7 @@ curves	Smooth	Glätten
 	{name} (Photoshop)	{name} (Photoshop)
 	{message} ({note})	{message} ({note})
 @plural	Loaded {n} action from {file}|Loaded {n} actions from {file}	{n} Aktion aus {file} geladen|{n} Aktionen aus {file} geladen
-@plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} Schritt hat noch keine Entsprechung in PhotoCraft|{n} Schritte haben noch keine Entsprechung in PhotoCraft
+@plural	{n} step has no YEDIT equivalent yet|{n} steps have no YEDIT equivalent yet	{n} Schritt hat noch keine Entsprechung in YEDIT|{n} Schritte haben noch keine Entsprechung in YEDIT
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	{n} Aktion in {file} gespeichert|{n} Aktionen in {file} gespeichert
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} Schritt ohne Photoshop-Entsprechung ausgelassen|{n} Schritte ohne Photoshop-Entsprechung ausgelassen
 
@@ -3254,19 +3248,19 @@ curves	Smooth	Glätten
 	Sent to {printer}	An {printer} gesendet
 	set in Print Settings…	in den Druckeinstellungen festlegen…
 	ICO is limited to 256 × 256 pixels	ICO ist auf 256 × 256 Pixel begrenzt
-# PhotoCraft release checks.
+# YEDIT release checks.
 	Check for Updates…	Nach Updates suchen…
-	PhotoCraft Updates	PhotoCraft-Updates
+	YEDIT Updates	YEDIT-Updates
 	Checking for updates…	Suche nach Updates…
 	Open the release page to choose an installer for your system.	Öffnen Sie die Versionsseite und wählen Sie ein Installationspaket für Ihr System.
 	Open Download Page	Downloadseite öffnen
-	PhotoCraft is up to date.	PhotoCraft ist auf dem neuesten Stand.
+	YEDIT is up to date.	YEDIT ist auf dem neuesten Stand.
 	Could not check for updates.	Updates konnten nicht geprüft werden.
 	Updates have not been checked yet.	Es wurde noch nicht nach Updates gesucht.
 	Check Again	Erneut prüfen
 	Automatically Check for Updates	Automatisch nach Updates suchen
 	Installed version: {version}	Installierte Version: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} ist verfügbar.
+	YEDIT {version} is available.	YEDIT {version} ist verfügbar.
 # History panel › History Brush source (#2966)
 	Paints from the History panel's source state	Malt aus dem Quellzustand des Protokollbedienfelds
 	Sets the source for the history brush	Legt die Quelle für den Protokollpinsel fest
@@ -3305,12 +3299,12 @@ curves	Smooth	Glätten
 	Bicubic Smoother	Bikubisch glatter
 	Bicubic Sharper	Bikubisch schärfer
 	Pasting from other apps is unavailable	Einfügen aus anderen Apps ist nicht verfügbar
-	PhotoCraft can't reach the system clipboard in this session. On Wayland, a Flatpak sandbox hides the protocol that images from other apps are read through.	PhotoCraft kann in dieser Sitzung nicht auf die Systemzwischenablage zugreifen. Unter Wayland verbirgt eine Flatpak-Sandbox das Protokoll, über das Bilder aus anderen Apps gelesen werden.
-	To paste from other apps, start PhotoCraft under XWayland: `{command}`	Um aus anderen Apps einzufügen, starte PhotoCraft unter XWayland: `{command}`
-	Nothing to paste: PhotoCraft can't read the system clipboard here	Nichts einzufügen: PhotoCraft kann die Systemzwischenablage hier nicht lesen
+	YEDIT can't reach the system clipboard in this session. On Wayland, a Flatpak sandbox hides the protocol that images from other apps are read through.	YEDIT kann in dieser Sitzung nicht auf die Systemzwischenablage zugreifen. Unter Wayland verbirgt eine Flatpak-Sandbox das Protokoll, über das Bilder aus anderen Apps gelesen werden.
+	To paste from other apps, start YEDIT under XWayland: `{command}`	Um aus anderen Apps einzufügen, starte YEDIT unter XWayland: `{command}`
+	Nothing to paste: YEDIT can't read the system clipboard here	Nichts einzufügen: YEDIT kann die Systemzwischenablage hier nicht lesen
 	Delete this set	Diesen Satz löschen
 	New Set…	Neuer Satz…
-	PhotoCraft Defaults	PhotoCraft-Standard
+	YEDIT Defaults	YEDIT-Standard
 	Save a list of these shortcuts as a web page	Liste dieser Kurzbefehle als Webseite speichern
 	Save the changes to this set	Änderungen in diesem Satz speichern
 	Save these shortcuts as a .kys file	Diese Kurzbefehle als .kys-Datei speichern

@@ -3,16 +3,13 @@ authors = ["PhotoCraft contributors"]
 language = "en"
 multilingual = false
 src = "src"
-title = "PhotoCraft Documentation"
+title = "YEDIT Documentation"
 
 [build]
 build-dir = "output"
 create-missing = false
 
 [output.html]
-git-repository-icon = "fa-github"
-git-repository-url = "https://github.com/storytold/photocraft"
-edit-url-template = "https://github.com/storytold/photocraft/edit/main/book/{path}"
 preferred-dark-theme = "navy"
 smart-punctuation = true
 

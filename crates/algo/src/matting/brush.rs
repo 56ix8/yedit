@@ -12,9 +12,9 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use photocraft_color::PixelFormat;
-use photocraft_geom::{Rect, TILE_SIZE, TileCoord};
-use photocraft_raster::Surface;
+use yedit_color::PixelFormat;
+use yedit_geom::{Rect, TILE_SIZE, TileCoord};
+use yedit_raster::Surface;
 
 use super::box_mean;
 use crate::segment::RgbImage;

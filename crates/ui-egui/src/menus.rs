@@ -2,14 +2,14 @@
 
 use serde_json::{Value, json};
 
-use crate::PhotocraftApp;
+use crate::YeditApp;
 use crate::state::DialogKind;
 
 /// Shared gate for native menu clicks and control-channel `ui.menu.invoke`.
 /// Dialogs and unsaved-changes prompts block edits, but allow the four view-navigation
 /// commands also usable through shortcuts. Camera Raw blocks menu commands entirely, and a pending
 /// crop blocks the commands Photoshop greys during one (`crop_ui::blocks`).
-pub(crate) fn modal_allows(app: &PhotocraftApp, id: &str) -> bool {
+pub(crate) fn modal_allows(app: &YeditApp, id: &str) -> bool {
     if app.camera_raw.is_some() || crate::crop_ui::blocks(app, id) {
         return false;
     }
@@ -20,9 +20,9 @@ pub(crate) fn modal_allows(app: &PhotocraftApp, id: &str) -> bool {
 pub const TOP_MENUS: [&str; 10] = ["File", "Edit", "Image", "Layer", "Type", "Select", "Filter", "View", "Window", "Help"];
 
 /// UI-level commands (handled by the shell rather than the engine): id, label, menu, shortcut.
-/// The table is the engine's ([`photocraft_engine::shell_commands::SHELL_COMMANDS`]), so the
+/// The table is the engine's ([`yedit_engine::shell_commands::SHELL_COMMANDS`]), so the
 /// commands and their keys exist without this UI (headless shortcut sets, lists, conflicts).
-pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = photocraft_engine::shell_commands::SHELL_COMMANDS;
+pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = yedit_engine::shell_commands::SHELL_COMMANDS;
 
 /// Window › <document>: the open documents, listed at the end of the Window menu as in Photoshop.
 /// The id ends in the document's index, which is its tab's position.
@@ -67,7 +67,7 @@ fn workspace_name(id: &str) -> Option<&'static str> {
 }
 
 /// Run a command id from any source (menu, shortcut, palette, automation).
-pub fn invoke(app: &mut PhotocraftApp, ctx: &egui::Context, id: &str, params: Value) -> Result<Value, String> {
+pub fn invoke(app: &mut YeditApp, ctx: &egui::Context, id: &str, params: Value) -> Result<Value, String> {
     if app.automation_input
         && let Some(authorize) = app.services.automation_command.as_ref()
     {
@@ -85,7 +85,7 @@ pub fn invoke(app: &mut PhotocraftApp, ctx: &egui::Context, id: &str, params: Va
 }
 
 /// [`invoke`] without the unsaved-changes prompt, for once the user has already answered it.
-pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id: &str, params: Value) -> Result<Value, String> {
+pub(crate) fn invoke_unguarded(app: &mut YeditApp, ctx: &egui::Context, id: &str, params: Value) -> Result<Value, String> {
     if let Some(tool) = crate::tool_shortcuts::tool(id) {
         crate::tool_memory::select(app, tool);
         return Ok(json!({"tool": tool}));
@@ -115,7 +115,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
     if let Some(result) = crate::panel_docking::command(app, id, &params) {
         return result;
     }
-    // Help › Discord, website, GitHub, Report an Issue.
+    // Help-menu link commands (`links::COMMANDS`; none in YEDIT yet).
     if let Some(url) = crate::links::url_for(id) {
         return Ok(crate::links::open(app, ctx, url));
     }
@@ -208,7 +208,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
         "layer.renameLayer" if params.get("name").is_none() => {
             let st = app.session.active().ok_or("no document")?;
             let id = params.get("layer").and_then(Value::as_u64).or(st.active_layer.map(|l| l.0)).ok_or("no active layer")?;
-            let name = st.doc.layer(photocraft_doc::LayerId(id)).map(|l| l.name.clone()).ok_or("no such layer")?;
+            let name = st.doc.layer(yedit_doc::LayerId(id)).map(|l| l.name.clone()).ok_or("no such layer")?;
             // Another rename in progress is committed first (#314).
             if let Some((cmd, p)) = crate::layer_row_ui::start_rename(ctx, id, &name) {
                 app.run(&cmd, p)?;
@@ -238,7 +238,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
             match params.get("path").and_then(Value::as_str) {
                 Some(path) => app.save_as_with(Some(path.to_string()), choices),
                 None => {
-                    let own = app.session.active().and_then(|d| d.path.clone().map(|p| (photocraft_engine::file_cmds::holds_at(&d.doc, &p), p, d)));
+                    let own = app.session.active().and_then(|d| d.path.clone().map(|p| (yedit_engine::file_cmds::holds_at(&d.doc, &p), p, d)));
                     match own {
                         Some((true, path, d)) => {
                             // Another app changed the file since it was opened or saved: ask first (#6596).
@@ -246,9 +246,9 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
                             crate::disk_change_prompt::intercept(app, doc, &path, false, crate::FormatChoices::default())
                                 .unwrap_or_else(|| app.save_in_place(path, crate::FormatChoices::default()))
                         }
-                        Some((false, path, d)) if photocraft_engine::file_cmds::saves_in_place(&path) => {
+                        Some((false, path, d)) if yedit_engine::file_cmds::saves_in_place(&path) => {
                             // Its own file is layered but can't hold what the document has now.
-                            let losses = photocraft_engine::file_cmds::losses_at(&d.doc, &path);
+                            let losses = yedit_engine::file_cmds::losses_at(&d.doc, &path);
                             let name = crate::file_open::display_name(&path);
                             let title = crate::i18n::fmt(tl!("{name} can't keep everything in this document"), &[("name", name.as_str())]);
                             let mut lines = losses;
@@ -388,8 +388,8 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
         }
         "layer.smartFilter.blendingOptions" if params.get("blend").is_none() && params.get("opacity").is_none() => {
             let st = app.session.active().ok_or("no document open")?;
-            let layer = params.get("layer").and_then(Value::as_u64).map(photocraft_doc::LayerId).or(st.active_layer).ok_or("no layer selected")?;
-            let Some(photocraft_doc::LayerContent::Smart(sm)) = st.doc.layer(layer).map(|l| &l.content) else {
+            let layer = params.get("layer").and_then(Value::as_u64).map(yedit_doc::LayerId).or(st.active_layer).ok_or("no layer selected")?;
+            let Some(yedit_doc::LayerContent::Smart(sm)) = st.doc.layer(layer).map(|l| &l.content) else {
                 return Err("the layer is not a Smart Object".into());
             };
             let index = match params.get("index") {
@@ -455,7 +455,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
         // Edit › Stroke…: open its full options dialog when called from menus/context
         // menus. Explicit params from Actions, CLI, MCP and control channel execute directly.
         crate::stroke_ui::COMMAND if params.as_object().is_none_or(|o| o.is_empty()) => {
-            if let Some(Err(why)) = photocraft_engine::commands::find(id).map(|c| (c.enabled)(&app.session)) {
+            if let Some(Err(why)) = yedit_engine::commands::find(id).map(|c| (c.enabled)(&app.session)) {
                 return Err(why);
             }
             Ok(json!({"dialog": crate::stroke_ui::open(app)}))
@@ -468,7 +468,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
             let st = app.session.active().ok_or("no document is open")?;
             let channel = match st.channel_view.target {
                 _ if st.doc.quick_mask.is_some() => json!("quickMask"),
-                photocraft_engine::channel_cmds::ChannelTarget::Alpha(i) => json!(i),
+                yedit_engine::channel_cmds::ChannelTarget::Alpha(i) => json!(i),
                 _ if mask => json!("mask"),
                 _ => return Err("target an alpha or spot channel, or a layer mask, first".into()),
             };
@@ -485,12 +485,12 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
         "select.colorRange" if params.as_object().is_none_or(|o| o.is_empty()) => Ok(json!({"dialog": crate::color_range_ui::open(app)})),
         // Layer › New Fill Layer › Pattern… from the menu: the Pattern Fill dialog (with params:
         // the engine directly).
-        photocraft_engine::pattern_fill_cmds::CREATE if params.as_object().is_none_or(|o| o.is_empty()) => {
+        yedit_engine::pattern_fill_cmds::CREATE if params.as_object().is_none_or(|o| o.is_empty()) => {
             Ok(json!({"dialog": crate::pattern_fill_ui::open_new(app)?}))
         }
         // Edit › Fill… from the menu or its shortcuts: the Fill dialog (with params: the engine).
         crate::fill_ui::COMMAND if params.as_object().is_none_or(|o| o.is_empty()) => {
-            if let Some(Err(why)) = photocraft_engine::commands::find(id).map(|c| (c.enabled)(&app.session)) {
+            if let Some(Err(why)) = yedit_engine::commands::find(id).map(|c| (c.enabled)(&app.session)) {
                 return Err(why);
             }
             Ok(json!({"dialog": crate::fill_ui::open(app)}))
@@ -529,7 +529,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
                     let pz = app.point_zoom();
                     let (hw, hh) = (app.last_canvas_rect.width() / 2.0 / pz / app.ui.view.display_aspect(), app.last_canvas_rect.height() / 2.0 / pz);
                     let r =
-                        photocraft_geom::Rect::new((v.center[0] - hw) as i32, (v.center[1] - hh) as i32, (v.center[0] + hw) as i32, (v.center[1] + hh) as i32);
+                        yedit_geom::Rect::new((v.center[0] - hw) as i32, (v.center[1] - hh) as i32, (v.center[0] + hw) as i32, (v.center[1] + hh) as i32);
                     !clip.bounds.intersect(&r).is_empty()
                 });
             let p = match app.session.active_index() {
@@ -681,11 +681,11 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
     }
 }
 
-fn open_path(app: &mut PhotocraftApp, path: &str) -> Result<Value, String> {
+fn open_path(app: &mut YeditApp, path: &str) -> Result<Value, String> {
     app.open_path(path).map(|w| json!({"warnings": w}))
 }
 
-pub fn is_enabled(app: &PhotocraftApp, id: &str) -> bool {
+pub fn is_enabled(app: &YeditApp, id: &str) -> bool {
     if crate::tool_shortcuts::tool(id).is_some() {
         return true;
     }
@@ -763,7 +763,7 @@ pub fn is_enabled(app: &PhotocraftApp, id: &str) -> bool {
             .session
             .active()
             .and_then(|s| s.active_layer.and_then(|id| s.doc.layer(id)))
-            .is_some_and(|l| matches!(l.content, photocraft_doc::LayerContent::Text(_))),
+            .is_some_and(|l| matches!(l.content, yedit_doc::LayerContent::Text(_))),
         "select.transformSelection" => app.ui.transform.is_none() && app.session.is_enabled("select.transformSelection"),
         // ⇧[ / ⇧] only step the hardness of a tool that paints with the brush tip, as in Photoshop.
         "tools.decreaseBrushHardness" | "tools.increaseBrushHardness" => app.ui.tool.is_brushlike(),
@@ -789,13 +789,13 @@ pub fn is_enabled(app: &PhotocraftApp, id: &str) -> bool {
 const MODE_CHECKS: [&str; 11] = ["rgb", "grayscale", "cmyk", "lab", "multichannel", "indexedColor", "bitmap", "duotone", "bits8", "bits16", "bits32"];
 
 /// Is a UI-level panel toggle currently on (for checkmarks)?
-fn checked(app: &PhotocraftApp, id: &str) -> Option<bool> {
+fn checked(app: &YeditApp, id: &str) -> Option<bool> {
     if let Some(checked) = crate::panel_docking::checked(app, id) {
         return Some(checked);
     }
-    use photocraft_doc::{ColorMode, SampleType};
+    use yedit_doc::{ColorMode, SampleType};
     if let Some(name) = id.strip_prefix("window.theme.").filter(|n| *n != "toggle") {
-        let auto = app.session.prefs().interface.appearance_mode == photocraft_engine::prefs::AppearanceMode::Auto;
+        let auto = app.session.prefs().interface.appearance_mode == yedit_engine::prefs::AppearanceMode::Auto;
         return Some(if name == "system" { auto } else { !auto && crate::theme::ThemeKind::from_name(name) == Some(app.ui.theme) });
     }
     if let Some(c) = crate::view_cmds::checked(app, id) {
@@ -921,7 +921,7 @@ pub struct MenuItem {
 /// the parity report ([`crate::parity`]).
 pub fn is_live(id: &str) -> bool {
     static UI_IDS: std::sync::OnceLock<std::collections::HashSet<&'static str>> = std::sync::OnceLock::new();
-    photocraft_engine::commands::find(id).is_some()
+    yedit_engine::commands::find(id).is_some()
         || crate::tool_shortcuts::tool(id).is_some()
         || UI_IDS.get_or_init(|| UI_COMMANDS.iter().map(|c| c.0).collect()).contains(id)
         || panel_alias(id).is_some()
@@ -946,7 +946,7 @@ const PLACE_AFTER: &[(&str, &str)] = &[
     ("filter.other.colorToAlpha", "filter.other.offset"),
 ];
 
-pub fn menu_items(app: &PhotocraftApp) -> Vec<MenuItem> {
+pub fn menu_items(app: &YeditApp) -> Vec<MenuItem> {
     // 1) Photoshop's full menu tree, in Photoshop order; live where we implement the command.
     let known = is_live;
     let mut items: Vec<MenuItem> = crate::menu_catalog::CATALOG
@@ -976,7 +976,7 @@ pub fn menu_items(app: &PhotocraftApp) -> Vec<MenuItem> {
             color: None,
         });
     }
-    for c in photocraft_engine::command_specs().iter().filter(|c| !c.menu.is_empty()) {
+    for c in yedit_engine::command_specs().iter().filter(|c| !c.menu.is_empty()) {
         extra.push(MenuItem {
             id: c.id.into(),
             label: c.label.into(),
@@ -1010,7 +1010,7 @@ pub fn menu_items(app: &PhotocraftApp) -> Vec<MenuItem> {
     // Layer › Merge Layers reads Merge Group with just a group selected, as in Photoshop (#3832).
     if let Some(st) = app.session.active()
         && st.selected_layers().len() <= 1
-        && st.active_layer.and_then(|id| st.doc.layer(id)).is_some_and(|l| matches!(l.content, photocraft_doc::LayerContent::Group(_)))
+        && st.active_layer.and_then(|id| st.doc.layer(id)).is_some_and(|l| matches!(l.content, yedit_doc::LayerContent::Group(_)))
         && let Some(item) = items.iter_mut().find(|i| i.id == "layer.mergeLayers")
     {
         item.label = "Merge Group".into();
@@ -1019,7 +1019,7 @@ pub fn menu_items(app: &PhotocraftApp) -> Vec<MenuItem> {
     // On the web it intentionally downloads PNG until the quick-export service supports
     // the other formats; the Layer quick-export command also always produces PNG.
     if let Some(item) = items.iter_mut().find(|i| i.id == "file.export.quickExportAsPng") {
-        use photocraft_engine::prefs::QuickExportFormat;
+        use yedit_engine::prefs::QuickExportFormat;
         let format = if cfg!(target_arch = "wasm32") {
             "PNG"
         } else {
@@ -1088,8 +1088,11 @@ pub fn menu_items(app: &PhotocraftApp) -> Vec<MenuItem> {
         let before = items.iter().position(|i| i.id == "help.systemInfo" || i.id == "help.about").unwrap_or(items.len());
         items.insert(before, update);
     }
-    // Help: the link items and update check, a separator, then System Info and About.
-    if let Some(at) = items.iter().position(|i| i.id == "help.systemInfo" || i.id == "help.about") {
+    // Help: the link items and update check, a separator, then System Info and About. No
+    // separator when nothing comes before them (YEDIT has no links or update check).
+    if let Some(at) = items.iter().position(|i| i.id == "help.systemInfo" || i.id == "help.about")
+        && at.checked_sub(1).and_then(|p| items.get(p)).is_some_and(|i| i.path.first().map(String::as_str) == Some("Help"))
+    {
         items.insert(
             at,
             MenuItem { id: "---".into(), label: "---".into(), path: vec!["Help".into()], shortcut: None, enabled: false, checked: None, color: None },
@@ -1178,13 +1181,13 @@ impl ItemCache {
 /// Draws the menu bar; returns the inner edge of the menu titles, facing the rest of the title bar
 /// (the right edge of the last title, or its left edge in a right-to-left UI, where File is at the
 /// right). The bar itself fills the row.
-pub fn menu_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) -> f32 {
+pub fn menu_bar(app: &mut YeditApp, ui: &mut egui::Ui) -> f32 {
     // Built only while a menu is open: every item's enabled/checked state scales with the
     // document (layer lookups), which cost milliseconds per frame on large layouts (#125). While
     // one stays open, the items are reused until what they depend on changes.
     let kept = std::cell::Cell::new(app.menu_cache.take());
     let built: std::cell::OnceCell<ItemCache> = std::cell::OnceCell::new();
-    let app_ref: &PhotocraftApp = app;
+    let app_ref: &YeditApp = app;
     let rtl = crate::direction::is_rtl();
     let mut edge = if rtl { ui.cursor().right() } else { ui.cursor().left() };
     let lang = crate::i18n::current();
@@ -1621,14 +1624,14 @@ fn submenu_enabled(children: &[&MenuItem]) -> bool {
 /// The command a menu click runs: ⌥ + Merge Down / Merge Layers / Merge Visible keep the
 /// originals, running Stamp Down / Stamp Visible instead (#217).
 pub fn alt_click(id: String, alt: bool) -> String {
-    match photocraft_engine::stamp_cmds::alt_variant(&id) {
+    match yedit_engine::stamp_cmds::alt_variant(&id) {
         Some(stamp) if alt => stamp.to_string(),
         _ => id,
     }
 }
 
 /// Workspace presets (Window → Workspace): which panels are visible.
-pub fn apply_workspace(app: &mut PhotocraftApp) {
+pub fn apply_workspace(app: &mut YeditApp) {
     // Saved workspaces (Window › Workspace › New Workspace…) restore their own layout.
     if crate::workspace_ui::apply_custom(app) {
         return;
@@ -1672,7 +1675,7 @@ mod tests {
 
     #[test]
     fn showing_grid_restores_hidden_extras() {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), Default::default());
+        let mut app = YeditApp::new(yedit_engine::Session::new(), Default::default());
         let ctx = egui::Context::default();
         app.ui.extras.grid = false;
         app.ui.view.extras = false;
@@ -1693,8 +1696,8 @@ mod tests {
 
     #[test]
     fn sync_with_system_menu_keeps_saved_slots_and_its_checkmark_across_palettes() {
-        use photocraft_engine::prefs::{AppearanceMode, DarkTheme, LightTheme};
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), Default::default());
+        use yedit_engine::prefs::{AppearanceMode, DarkTheme, LightTheme};
+        let mut app = YeditApp::new(yedit_engine::Session::new(), Default::default());
         let ctx = egui::Context::default();
         app.services.system_theme = Some(Box::new(|_| Some(egui::Theme::Light)));
         app.run("prefs.set", json!({"values": {"interface.darkTheme": "studio", "interface.lightTheme": "classic"}})).unwrap();
@@ -1741,7 +1744,7 @@ mod tests {
 
     #[test]
     fn live_lookup_finds_engine_and_shell_commands() {
-        for command in photocraft_engine::commands::command_specs() {
+        for command in yedit_engine::commands::command_specs() {
             assert!(is_live(command.id), "{}", command.id);
         }
         for &(id, ..) in UI_COMMANDS {
@@ -1754,7 +1757,7 @@ mod tests {
 
     #[test]
     fn select_menu_contains_every_selection_context_action_and_more() {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         app.run("file.new", json!({"width": 32, "height": 32})).unwrap();
         app.run("select.rect", json!({"x": 2, "y": 2, "width": 8, "height": 8})).unwrap();
         let items = menu_items(&app);
@@ -1779,7 +1782,7 @@ mod tests {
     /// Other submenu (not a second "Other") right after Offset, enabled on a pixel layer.
     #[test]
     fn color_to_alpha_sits_in_filter_other_after_offset() {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         app.run("file.new", json!({"width": 32, "height": 32})).unwrap();
         let items = menu_items(&app);
         let at = |id: &str| items.iter().position(|i| i.id == id).unwrap_or_else(|| panic!("{id} missing"));
@@ -1798,14 +1801,14 @@ mod tests {
 
         for theme in crate::theme::ThemeKind::ALL {
             for width in [640.0, 1440.0] {
-                let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+                let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
                 let mut harness = Harness::builder().with_size(egui::vec2(width, 200.0)).build_ui_state(
                     |ui, app| {
                         menu_bar(app, ui);
                     },
                     app,
                 );
-                PhotocraftApp::setup_context(&harness.ctx, theme);
+                YeditApp::setup_context(&harness.ctx, theme);
                 harness.run_steps(3);
 
                 let font = egui::TextStyle::Button.resolve(&harness.ctx.global_style());
@@ -1859,7 +1862,7 @@ mod tests {
     fn hovering_a_title_at_the_screen_edge_switches_the_open_menu() {
         use egui_kittest::{Harness, kittest::Queryable};
 
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let mut harness = Harness::builder().with_size(egui::vec2(1200.0, 700.0)).build_ui_state(
             |ui, app| {
                 egui::Frame::NONE.inner_margin(egui::Margin { top: 4, ..Default::default() }).show(ui, |ui| {
@@ -1868,7 +1871,7 @@ mod tests {
             },
             app,
         );
-        PhotocraftApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
+        YeditApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
         harness.run_steps(3);
         harness.get_by_label("File").click();
         harness.run_steps(3);
@@ -1885,14 +1888,14 @@ mod tests {
     fn hovering_another_title_switches_the_open_menu() {
         use egui_kittest::{Harness, kittest::Queryable};
 
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let mut harness = Harness::builder().with_size(egui::vec2(1200.0, 700.0)).build_ui_state(
             |ui, app| {
                 menu_bar(app, ui);
             },
             app,
         );
-        PhotocraftApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
+        YeditApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
         harness.run_steps(3);
         // Nothing open: hovering a title does not open it.
         harness.get_by_label("Image").hover();
@@ -1914,21 +1917,21 @@ mod tests {
     fn an_open_menu_reuses_its_items_until_the_state_changes() {
         use egui_kittest::{Harness, kittest::Queryable};
 
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let mut harness = Harness::builder().with_size(egui::vec2(1200.0, 700.0)).build_ui_state(
             |ui, app| {
                 menu_bar(app, ui);
             },
             app,
         );
-        PhotocraftApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
+        YeditApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
         harness.run_steps(3);
         assert!(harness.state().menu_cache.is_none(), "no menu open, nothing built");
         harness.get_by_label("File").click();
         harness.run_steps(3);
         // The same allocation frame after frame: the items were not rebuilt.
-        let built = |app: &PhotocraftApp| app.menu_cache.as_ref().map(|c| c.items.as_ptr());
-        let close = |app: &PhotocraftApp| app.menu_cache.as_ref().and_then(|c| c.items.iter().find(|i| i.id == "file.close")).map(|i| i.enabled);
+        let built = |app: &YeditApp| app.menu_cache.as_ref().map(|c| c.items.as_ptr());
+        let close = |app: &YeditApp| app.menu_cache.as_ref().and_then(|c| c.items.iter().find(|i| i.id == "file.close")).map(|i| i.enabled);
         let first = built(harness.state());
         assert!(first.is_some());
         assert_eq!(close(harness.state()), Some(false));
@@ -1945,7 +1948,7 @@ mod tests {
 
     #[test]
     fn help_search_finds_commands_by_any_word() {
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let items = menu_items(&app);
         let ids = |q: &str| search_items(&items, q, crate::i18n::Lang::EN).iter().map(|i| i.id.clone()).collect::<Vec<_>>();
         let di = ids("DI");
@@ -1964,7 +1967,7 @@ mod tests {
     /// In another UI language both the translated and the English names match.
     #[test]
     fn help_search_matches_the_ui_language_and_english() {
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let items = menu_items(&app);
         let Some(fr) = crate::i18n::Lang::from_code("fr") else { return };
         let ids = |q: &str| search_items(&items, q, fr).iter().map(|i| i.id.clone()).collect::<Vec<_>>();
@@ -1984,8 +1987,8 @@ mod tests {
             let what = format!("custom title bar {custom}, document {doc}, scale {scale}");
             let mut h = Harness::builder().with_size(egui::vec2(1200.0 / scale, 800.0 / scale)).with_pixels_per_point(scale).with_max_steps(64).build_eframe(
                 move |cc| {
-                    PhotocraftApp::setup_context(&cc.egui_ctx, crate::theme::ThemeKind::ALL[0]);
-                    let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+                    YeditApp::setup_context(&cc.egui_ctx, crate::theme::ThemeKind::ALL[0]);
+                    let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
                     app.custom_titlebar = custom;
                     if doc {
                         app.run("file.new", json!({"width": 64, "height": 48})).unwrap();
@@ -1994,7 +1997,7 @@ mod tests {
                 },
             );
             h.run_steps(4);
-            let click = |h: &mut Harness<'_, PhotocraftApp>, at: egui::Pos2| {
+            let click = |h: &mut Harness<'_, YeditApp>, at: egui::Pos2| {
                 h.event(Event::PointerMoved(at));
                 h.run_steps(1);
                 h.event(Event::PointerButton { pos: at, button: PointerButton::Primary, pressed: true, modifiers: Modifiers::NONE });
@@ -2002,14 +2005,14 @@ mod tests {
                 h.event(Event::PointerButton { pos: at, button: PointerButton::Primary, pressed: false, modifiers: Modifiers::NONE });
                 h.run_steps(3);
             };
-            let typing = |h: &mut Harness<'_, PhotocraftApp>, text: &str| {
+            let typing = |h: &mut Harness<'_, YeditApp>, text: &str| {
                 for c in text.chars() {
                     h.event(Event::Text(c.to_string()));
                     h.run_steps(1);
                 }
                 h.run_steps(3);
             };
-            let open = |h: &Harness<'_, PhotocraftApp>| h.query_by_label_contains("About PhotoCraft").is_some();
+            let open = |h: &Harness<'_, YeditApp>| h.query_by_label_contains("About YEDIT").is_some();
             let field_id = egui::Id::new("help-menu-search").with("field");
             let help = h.get_by_label("Help").rect().center();
             click(&mut h, help);
@@ -2030,14 +2033,14 @@ mod tests {
     }
 
     /// #5996: a real key press comes as a key and its text. A letter typed into Help › Search is
-    /// text for the field, not a mnemonic: "S" ran System Info and "A" the ArtCraft website.
+    /// text for the field, not a mnemonic: "S" ran System Info.
     #[test]
     fn help_search_letters_are_not_mnemonics() {
         use egui::{Event, Key, Modifiers, PointerButton};
         use egui_kittest::{Harness, kittest::Queryable};
         let mut h = Harness::builder().with_size(egui::vec2(1200.0, 800.0)).with_max_steps(64).build_eframe(|cc| {
-            PhotocraftApp::setup_context(&cc.egui_ctx, crate::theme::ThemeKind::ALL[0]);
-            PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default())
+            YeditApp::setup_context(&cc.egui_ctx, crate::theme::ThemeKind::ALL[0]);
+            YeditApp::new(yedit_engine::Session::new(), crate::Services::default())
         });
         h.run_steps(4);
         let help = h.get_by_label("Help").rect().center();
@@ -2048,7 +2051,7 @@ mod tests {
             h.run_steps(1);
         }
         h.run_steps(3);
-        assert!(h.query_by_label_contains("About PhotoCraft").is_some(), "Help opened");
+        assert!(h.query_by_label_contains("About YEDIT").is_some(), "Help opened");
         for c in "DeSelect all".chars() {
             let key = Key::from_name(&c.to_ascii_uppercase().to_string());
             if let Some(key) = key {
@@ -2061,7 +2064,7 @@ mod tests {
             }
         }
         h.run_steps(3);
-        assert!(h.query_by_label_contains("About PhotoCraft").is_some(), "typing keeps Help open");
+        assert!(h.query_by_label_contains("About YEDIT").is_some(), "typing keeps Help open");
         let query: String = h.ctx.data(|d| d.get_temp(egui::Id::new("help-menu-search"))).unwrap_or_default();
         assert_eq!(query, "DeSelect all", "every letter reached the field");
         assert!(h.state().ui.dialogs.is_empty(), "no menu command ran: {:?}", h.state().ui.dialogs);
@@ -2072,14 +2075,14 @@ mod tests {
         use egui_kittest::{Harness, kittest::Queryable};
 
         for theme in crate::theme::ThemeKind::ALL {
-            let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+            let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
             let mut harness = Harness::builder().with_size(egui::vec2(1200.0, 900.0)).build_ui_state(
                 |ui, app| {
                     menu_bar(app, ui);
                 },
                 app,
             );
-            PhotocraftApp::setup_context(&harness.ctx, theme);
+            YeditApp::setup_context(&harness.ctx, theme);
             harness.run_steps(3);
             harness.get_by_label("File").click();
             harness.run_steps(3);
@@ -2099,14 +2102,14 @@ mod tests {
     fn menu_level_height_is_bounded_by_viewport() {
         use egui_kittest::Harness;
 
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let mut harness = Harness::builder().with_size(egui::vec2(900.0, 240.0)).build_ui_state(
             |ui, app| {
                 menu_bar(app, ui);
             },
             app,
         );
-        PhotocraftApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
+        YeditApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
         harness.run_steps(3);
         // Opening a top-level menu with many entries must not grow its popup past the viewport.
         use egui_kittest::kittest::Queryable;
@@ -2127,14 +2130,14 @@ mod tests {
     fn tall_menu_scrolls_with_mouse_wheel_on_short_display() {
         use egui_kittest::{Harness, kittest::Queryable};
 
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let mut harness = Harness::builder().with_size(egui::vec2(900.0, 220.0)).build_ui_state(
             |ui, app| {
                 menu_bar(app, ui);
             },
             app,
         );
-        PhotocraftApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
+        YeditApp::setup_context(&harness.ctx, crate::theme::ThemeKind::ALL[0]);
         harness.run_steps(3);
         harness.get_by_label("Filter").click();
         harness.run_steps(3);
@@ -2156,7 +2159,7 @@ mod tests {
 
     #[test]
     fn window_panel_and_workspace_ids_drive_the_shell() {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let ctx = egui::Context::default();
         assert!(!app.ui.panels.history);
         invoke(&mut app, &ctx, "window.panel.history", Value::Null).unwrap();
@@ -2177,7 +2180,7 @@ mod tests {
 
     #[test]
     fn proof_setup_presets_and_checkmarks() {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let ctx = egui::Context::default();
         app.run("file.new", json!({"width": 8, "height": 8})).unwrap();
         app.sync_views();
@@ -2194,7 +2197,7 @@ mod tests {
         assert_eq!((at(0, 8, 0), at(4, 4, 4)), (255, 0));
         // Custom… opens the generated Proof Setup dialog with a profile choice.
         assert!(invoke(&mut app, &ctx, "view.proofSetup.custom", Value::Null).unwrap()["dialog"].is_u64());
-        let spec = photocraft_engine::commands::find("edit.convertToProfile").unwrap();
+        let spec = yedit_engine::commands::find("edit.convertToProfile").unwrap();
         let params = crate::filter_dialog::parse_spec(spec.params);
         assert!(
             matches!(&params[0].kind, crate::filter_dialog::Kind::Choice { options, .. } if options[0] == "srgb" && !options.iter().any(|v| v.contains('/')))
@@ -2209,7 +2212,7 @@ mod open_recent_tests {
 
     #[test]
     fn tracks_dedupes_caps_and_lists() {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         app.push_recent("/tmp/a.png");
         app.push_recent("/tmp/b.psd");
         app.push_recent("/tmp/a.png"); // de-dupe → moves to front
@@ -2257,16 +2260,16 @@ mod open_recent_tests {
     #[cfg(not(target_arch = "wasm32"))]
     #[test]
     fn opening_a_file_records_it_as_recent() {
-        use photocraft_color::{ColorMode, SampleType};
-        use photocraft_geom::Size;
+        use yedit_color::{ColorMode, SampleType};
+        use yedit_geom::Size;
         let services = crate::Services {
-            import: Some(Box::new(|_n: &str, _b: &[u8], _opts: &photocraft_io::ImportOptions| {
-                Ok((photocraft_doc::Document::new("t", Size::new(4, 4), ColorMode::Rgb, SampleType::U8), Vec::new()))
+            import: Some(Box::new(|_n: &str, _b: &[u8], _opts: &yedit_io::ImportOptions| {
+                Ok((yedit_doc::Document::new("t", Size::new(4, 4), ColorMode::Rgb, SampleType::U8), Vec::new()))
             })),
             ..Default::default()
         };
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), services);
-        let path = std::env::temp_dir().join("photocraft_recent_test.pcraft");
+        let mut app = YeditApp::new(yedit_engine::Session::new(), services);
+        let path = std::env::temp_dir().join("yedit_recent_test.yedit");
         std::fs::write(&path, b"x").unwrap();
         let p = path.to_string_lossy().to_string();
         let ctx = egui::Context::default();
@@ -2287,7 +2290,7 @@ mod quick_export_label_tests {
 
     #[test]
     fn file_quick_export_menu_reflects_selected_format_without_renaming_layer_export() {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         for (value, expected) in [("png", "PNG"), ("jpg", "JPG"), ("gif", "GIF"), ("webp", "WebP"), ("exr", "EXR")] {
             app.run("prefs.set", json!({"values": {"export.quickExportFormat": value}})).unwrap();
             let items = menu_items(&app);
@@ -2322,7 +2325,7 @@ mod reveal_label_tests {
 
     #[test]
     fn smart_objects_reveal_item_names_the_platform_file_manager() {
-        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         let id = "layer.smartObjects.revealInFinder";
         let items = menu_items(&app);
         let reveal: Vec<_> = items.iter().filter(|i| i.id == id).collect();
@@ -2346,8 +2349,8 @@ mod window_documents_tests {
     use super::*;
     use serde_json::json;
 
-    fn app(docs: usize) -> PhotocraftApp {
-        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+    fn app(docs: usize) -> YeditApp {
+        let mut app = YeditApp::new(yedit_engine::Session::new(), crate::Services::default());
         for _ in 0..docs {
             app.run("file.new", json!({"width": 64, "height": 48})).unwrap();
         }
@@ -2356,7 +2359,7 @@ mod window_documents_tests {
     }
 
     /// The rows after Window's last own item: a separator and the documents.
-    fn listed(app: &PhotocraftApp) -> Vec<(String, String, Option<bool>)> {
+    fn listed(app: &YeditApp) -> Vec<(String, String, Option<bool>)> {
         let items = menu_items(app);
         let window: Vec<&MenuItem> = items.iter().filter(|i| i.path == ["Window"]).collect();
         let at = window.iter().position(|i| i.id.starts_with(DOCUMENT_ITEM)).unwrap_or(window.len());
@@ -2408,7 +2411,7 @@ mod window_documents_tests {
         let items = menu_items(&app);
         let row = items.iter().find(|i| i.id == "window.document.0").unwrap();
         assert_eq!(translated_menu_label(de, row), "Layers");
-        let bar = crate::native_menu::photocraft_layout(&items, de, "de").bar;
+        let bar = crate::native_menu::yedit_layout(&items, de, "de").bar;
         assert_eq!(bar.find("window.document.0").map(|i| i.label.as_str()), Some("Layers"));
         let panel = items.iter().find(|i| i.path == ["Window"] && i.label == "Layers").unwrap();
         assert_eq!(bar.find(&panel.id).map(|i| i.label.clone()), Some(translated_menu_label(de, panel)), "Window › Layers is still translated");

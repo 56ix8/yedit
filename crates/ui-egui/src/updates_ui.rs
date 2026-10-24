@@ -1,9 +1,9 @@
 //! One background check at startup and a non-modal window for release information.
 
-use photocraft_engine::updates_cmds::Status;
+use yedit_engine::updates_cmds::Status;
 use serde_json::Value;
 
-use crate::PhotocraftApp;
+use crate::YeditApp;
 
 #[derive(Default)]
 pub(crate) struct Runtime {
@@ -11,7 +11,7 @@ pub(crate) struct Runtime {
     notified_version: Option<String>,
 }
 
-pub(crate) fn check(app: &mut PhotocraftApp, _ctx: &egui::Context, params: Value) -> Result<Value, String> {
+pub(crate) fn check(app: &mut YeditApp, _ctx: &egui::Context, params: Value) -> Result<Value, String> {
     let before = app.session.updates.status.clone();
     let result = app.run("help.checkForUpdates", params);
     // A check that fails to start still shows its failure and Check Again; the command error
@@ -28,7 +28,7 @@ pub(crate) fn check(app: &mut PhotocraftApp, _ctx: &egui::Context, params: Value
     result
 }
 
-pub(crate) fn tick(app: &mut PhotocraftApp, ctx: &egui::Context) {
+pub(crate) fn tick(app: &mut YeditApp, ctx: &egui::Context) {
     // `updates.status` also polls (automation may consume the result before this frame).
     app.session.updates.poll();
     if let Status::Available { release } = &app.session.updates.status
@@ -51,7 +51,7 @@ pub(crate) fn tick(app: &mut PhotocraftApp, ctx: &egui::Context) {
     }
 }
 
-pub(crate) fn show(app: &mut PhotocraftApp, ctx: &egui::Context) {
+pub(crate) fn show(app: &mut YeditApp, ctx: &egui::Context) {
     if !app.ui.updates_open {
         return;
     }
@@ -59,15 +59,15 @@ pub(crate) fn show(app: &mut PhotocraftApp, ctx: &egui::Context) {
     let status = app.session.updates.status.clone();
     let mut retry = false;
     let mut download = None;
-    egui::Window::new(tl!("PhotoCraft Updates"))
-        .id(egui::Id::new("photocraft_updates"))
+    egui::Window::new(tl!("YEDIT Updates"))
+        .id(egui::Id::new("yedit_updates"))
         .open(&mut open)
         .collapsible(false)
         .resizable(false)
         .default_width(380.0)
         .show(ctx, |ui| {
             let t = crate::theme::Tokens::get(ctx);
-            ui.label(crate::i18n::fmt(crate::i18n::t("Installed version: {version}"), &[("version", photocraft_engine::build_info::VERSION)]));
+            ui.label(crate::i18n::fmt(crate::i18n::t("Installed version: {version}"), &[("version", yedit_engine::build_info::VERSION)]));
             ui.add_space(8.0);
             match &status {
                 Status::Checking => {
@@ -77,14 +77,14 @@ pub(crate) fn show(app: &mut PhotocraftApp, ctx: &egui::Context) {
                     });
                 }
                 Status::Available { release } => {
-                    ui.label(crate::i18n::fmt(crate::i18n::t("PhotoCraft {version} is available."), &[("version", &release.version)]));
+                    ui.label(crate::i18n::fmt(crate::i18n::t("YEDIT {version} is available."), &[("version", &release.version)]));
                     ui.label(tl!("Open the release page to choose an installer for your system."));
                     if crate::widgets::primary_button(ui, tl!("Open Download Page"), 160.0).clicked() {
                         download = Some(release.url.clone());
                     }
                 }
                 Status::UpToDate => {
-                    ui.label(tl!("PhotoCraft is up to date."));
+                    ui.label(tl!("YEDIT is up to date."));
                 }
                 Status::Failed { message } => {
                     ui.colored_label(t.warning, tl!("Could not check for updates."));
@@ -111,17 +111,17 @@ pub(crate) fn show(app: &mut PhotocraftApp, ctx: &egui::Context) {
 mod tests {
     use super::*;
     use crate::{Services, menus};
-    use photocraft_engine::{Session, updates_cmds::Release};
+    use yedit_engine::{Session, updates_cmds::Release};
     use std::sync::{Arc, Mutex, mpsc};
 
-    type Sender = Arc<Mutex<Option<mpsc::Sender<photocraft_engine::updates_cmds::CheckResult>>>>;
+    type Sender = Arc<Mutex<Option<mpsc::Sender<yedit_engine::updates_cmds::CheckResult>>>>;
 
-    fn app() -> (PhotocraftApp, Arc<Mutex<u32>>, Sender) {
+    fn app() -> (YeditApp, Arc<Mutex<u32>>, Sender) {
         let calls = Arc::new(Mutex::new(0));
         let count = calls.clone();
         let sender = Arc::new(Mutex::new(None));
         let tx = sender.clone();
-        let app = PhotocraftApp::new(
+        let app = YeditApp::new(
             Session::new(),
             Services {
                 check_updates: Some(Box::new(move || {
@@ -136,7 +136,7 @@ mod tests {
         (app, calls, sender)
     }
 
-    fn at(app: &mut PhotocraftApp, ctx: &egui::Context, time: f64) {
+    fn at(app: &mut YeditApp, ctx: &egui::Context, time: f64) {
         let mut output = ctx.run_ui(egui::RawInput { time: Some(time), ..Default::default() }, |ui| tick(app, ui.ctx()));
         output.textures_delta.clear();
     }
@@ -194,7 +194,7 @@ mod tests {
         sender.lock().unwrap().as_ref().unwrap().send(Err("offline".into())).unwrap();
         at(&mut app, &ctx, 1.0);
         assert!(matches!(app.session.updates.status, Status::Failed { .. }));
-        let mut web = PhotocraftApp::new(Session::new(), Services::default());
+        let mut web = YeditApp::new(Session::new(), Services::default());
         assert!(!menus::is_enabled(&web, "help.checkForUpdates"));
         at(&mut web, &ctx, 2.0);
         assert_eq!(web.session.updates.status, Status::Idle);
@@ -223,7 +223,7 @@ mod tests {
     #[test]
     fn a_manual_check_that_fails_to_start_opens_the_status_window() {
         let mut app =
-            PhotocraftApp::new(Session::new(), Services { check_updates: Some(Box::new(|| Err("Could not start worker".into()))), ..Default::default() });
+            YeditApp::new(Session::new(), Services { check_updates: Some(Box::new(|| Err("Could not start worker".into()))), ..Default::default() });
         let ctx = egui::Context::default();
         let error = menus::invoke(&mut app, &ctx, "help.checkForUpdates", serde_json::json!({})).unwrap_err();
         assert!(error.contains("Could not start worker"), "{error}");
@@ -248,7 +248,7 @@ mod tests {
     fn update_window_is_drivable_and_bad_state_changes_are_atomic() {
         let (mut app, _, _) = app();
         let ctx = egui::Context::default();
-        let call = |app: &mut PhotocraftApp, method: &str, params: Value| {
+        let call = |app: &mut YeditApp, method: &str, params: Value| {
             let (req, _) = crate::control::ControlRequest::new(method, params);
             match crate::control::handle(app, &ctx, &req) {
                 crate::control::Outcome::Done(value) => value,

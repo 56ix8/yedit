@@ -5,10 +5,10 @@
 mod fixture;
 
 use fixture::{Marker, document};
-use photocraft_affinity::synth::Method;
-use photocraft_doc::{LayerContent, LayerId};
-use photocraft_engine::{Session, file_cmds::open_bytes_as};
-use photocraft_geom::{Point, Rect};
+use yedit_affinity::synth::Method;
+use yedit_doc::{LayerContent, LayerId};
+use yedit_engine::{Session, file_cmds::open_bytes_as};
+use yedit_geom::{Point, Rect};
 use serde_json::json;
 
 fn state(s: &Session, id: LayerId) -> (Rect, Point) {

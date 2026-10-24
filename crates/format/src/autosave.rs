@@ -2,7 +2,7 @@
 //! saves a document *snapshot* into a recovery directory on a background
 //! thread, so the UI never blocks.
 //!
-//! Layout: `<recovery_dir>/<key>.pcraft/` (directory bundles, so repeated
+//! Layout: `<recovery_dir>/<key>.yedit/` (directory bundles, so repeated
 //! autosaves write only changed tiles) plus `<key>.json` with
 //! [`RecoveryInfo`]. Native targets only (threads and a filesystem).
 //!
@@ -17,10 +17,10 @@ use std::sync::{Arc, Mutex};
 use std::thread::JoinHandle;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use photocraft_doc::Document;
+use yedit_doc::Document;
 use serde::{Deserialize, Serialize};
 
-use crate::{FormatError, PcraftWriter, Result, SaveOptions, SaveStats};
+use crate::{FormatError, YeditWriter, Result, SaveOptions, SaveStats};
 
 /// Sidecar describing an autosave.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -76,7 +76,7 @@ impl Autosaver {
         let (tx, rx) = mpsc::channel::<Job>();
         let last = Arc::new(Mutex::new(None));
         let completed = Arc::new(Mutex::new(Vec::new()));
-        let bundle = dir.join(format!("{key}.pcraft"));
+        let bundle = dir.join(format!("{key}.yedit"));
         let sidecar = dir.join(format!("{key}.json"));
         let last2 = last.clone();
         let completed2 = completed.clone();
@@ -94,7 +94,7 @@ impl Autosaver {
     }
 
     pub fn bundle_path(&self) -> PathBuf {
-        self.dir.join(format!("{}.pcraft", self.key))
+        self.dir.join(format!("{}.yedit", self.key))
     }
 
     /// Queue a snapshot for saving (returns immediately). Existing callers that only
@@ -158,7 +158,7 @@ impl Drop for Autosaver {
 }
 
 fn worker(rx: Receiver<Job>, bundle: PathBuf, sidecar: PathBuf, last: Arc<Mutex<Option<Result<SaveStats>>>>, completed: CompletedWrites) {
-    let mut writer = PcraftWriter::new();
+    let mut writer = YeditWriter::new();
     while let Ok(mut job) = rx.recv() {
         // Coalesce: skip to the newest queued snapshot.
         while let Ok(newer) = rx.try_recv() {
@@ -261,7 +261,7 @@ pub fn list_recovery(recovery_dir: &Path) -> Vec<RecoveryEntry> {
             && sanitize(&info.key) == info.key
             && p.file_stem().is_some_and(|stem| *stem == *info.key)
         {
-            let bundle = recovery_dir.join(format!("{}.pcraft", info.key));
+            let bundle = recovery_dir.join(format!("{}.yedit", info.key));
             if bundle.join(crate::store::MANIFEST).is_file() {
                 out.push(RecoveryEntry { info, bundle });
             }
@@ -275,12 +275,12 @@ pub fn list_recovery(recovery_dir: &Path) -> Vec<RecoveryEntry> {
     out
 }
 
-/// A committed `<key>.pcraft` bundle (its manifest is written last) whose sidecar was never
+/// A committed `<key>.yedit` bundle (its manifest is written last) whose sidecar was never
 /// published, e.g. a crash during a document's first autosave. The metadata is rebuilt from the
 /// manifest (read like a load reads it) and its modification time. Incomplete bundles (no
 /// readable manifest) and bundles with anything at the sidecar's path are not entries.
 fn sidecarless_entry(recovery_dir: &Path, bundle: &Path) -> Option<RecoveryEntry> {
-    let key = bundle.file_name()?.to_str()?.strip_suffix(".pcraft")?;
+    let key = bundle.file_name()?.to_str()?.strip_suffix(".yedit")?;
     if key.is_empty() || sanitize(key) != key || std::fs::symlink_metadata(recovery_dir.join(format!("{key}.json"))).is_ok() {
         return None;
     }
@@ -397,10 +397,10 @@ impl RecoveryStore {
 const ORPHAN_AGE: std::time::Duration = std::time::Duration::from_secs(24 * 60 * 60);
 
 /// Best-effort removal of recovery data nothing can ever load or clean up:
-/// - `<key>.pcraft` bundle folders with no `<key>.json` sidecar and no readable manifest (a
+/// - `<key>.yedit` bundle folders with no `<key>.json` sidecar and no readable manifest (a
 ///   crash in the middle of a document's first autosave). A sidecar-less bundle whose manifest
 ///   was committed is complete and listed by `list_recovery`, so it is kept;
-/// - `*.pcsave.tmp` files left by an interrupted atomic write (see [`crate::atomic::temp_name`])
+/// - `*.ysave.tmp` files left by an interrupted atomic write (see [`crate::atomic::temp_name`])
 ///   that another process created.
 ///
 /// Only entries untouched for at least `min_age` are removed. Bundles with a sidecar, symlinks,
@@ -420,7 +420,7 @@ fn sweep_orphans(recovery_dir: &Path, min_age: std::time::Duration) {
             continue;
         }
         let name = e.file_name();
-        let Some(key) = name.to_str().and_then(|n| n.strip_suffix(".pcraft")) else { continue };
+        let Some(key) = name.to_str().and_then(|n| n.strip_suffix(".yedit")) else { continue };
         if key.is_empty() || sanitize(key) != key {
             continue;
         }
@@ -448,8 +448,8 @@ fn sweep_orphans(recovery_dir: &Path, min_age: std::time::Duration) {
 #[cfg(not(target_arch = "wasm32"))]
 fn sweep_temp_file(path: &Path, min_age: std::time::Duration) {
     let Some(name) = path.file_name().and_then(|n| n.to_str()) else { return };
-    // `.{stem}.{pid}-{n}.pcsave.tmp`
-    let Some(rest) = name.strip_prefix('.').and_then(|n| n.strip_suffix(".pcsave.tmp")) else { return };
+    // `.{stem}.{pid}-{n}.ysave.tmp`
+    let Some(rest) = name.strip_prefix('.').and_then(|n| n.strip_suffix(".ysave.tmp")) else { return };
     let Some((_, owner)) = rest.rsplit_once('.') else { return };
     let Some(pid) = owner.split_once('-').and_then(|(pid, _)| pid.parse::<u32>().ok()) else { return };
     if pid != std::process::id() && untouched_for(path, min_age, false) {
@@ -471,7 +471,7 @@ fn remove_entry(dir: &Path, key: &str) -> Result<()> {
     if sanitize(key) != key {
         return Err(FormatError::corrupt("recovery entry key contains path components"));
     }
-    let bundle = dir.join(format!("{key}.pcraft"));
+    let bundle = dir.join(format!("{key}.yedit"));
     if bundle.exists() {
         std::fs::remove_dir_all(bundle)?;
     }
@@ -510,22 +510,22 @@ mod tests {
     #[test]
     fn sweep_removes_orphaned_bundles_and_foreign_temp_files_only() {
         let dir = std::env::temp_dir().join(format!(
-            "pcraft-sweep-{}-{}",
+            "yedit-sweep-{}-{}",
             std::process::id(),
             SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0)
         ));
         let doc =
-            Arc::new(Document::new("Kept", photocraft_doc::Size { width: 4, height: 4 }, photocraft_color::ColorMode::Rgb, photocraft_color::SampleType::U8));
+            Arc::new(Document::new("Kept", yedit_doc::Size { width: 4, height: 4 }, yedit_color::ColorMode::Rgb, yedit_color::SampleType::U8));
         let saver = Autosaver::new(&dir, "kept");
         saver.request(doc.clone(), 1, None, SaveOptions::default());
         assert!(saver.flush().is_some_and(|r| r.is_ok()));
         // A first autosave that crashed before its sidecar was written.
-        let orphan = dir.join("doc-crashed-1.pcraft");
+        let orphan = dir.join("doc-crashed-1.yedit");
         std::fs::create_dir_all(orphan.join("tiles")).unwrap();
         std::fs::write(orphan.join("tiles/abc.zst"), b"partial").unwrap();
         // Stale temp files: another process's (swept) and this process's (kept, may be in flight).
-        let foreign = [dir.join(".kept.json.4294967294-3.pcsave.tmp"), dir.join("kept.pcraft/.manifest.json.4294967294-0.pcsave.tmp")];
-        let own = dir.join(format!(".kept.json.{}-9.pcsave.tmp", std::process::id()));
+        let foreign = [dir.join(".kept.json.4294967294-3.ysave.tmp"), dir.join("kept.yedit/.manifest.json.4294967294-0.ysave.tmp")];
+        let own = dir.join(format!(".kept.json.{}-9.ysave.tmp", std::process::id()));
         for p in foreign.iter().chain([&own]) {
             std::fs::write(p, b"tmp").unwrap();
         }
@@ -552,12 +552,12 @@ mod tests {
     #[test]
     fn a_committed_bundle_without_a_sidecar_is_listed_and_survives_the_sweep() {
         let dir = std::env::temp_dir().join(format!(
-            "pcraft-nosidecar-{}-{}",
+            "yedit-nosidecar-{}-{}",
             std::process::id(),
             SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0)
         ));
         let doc =
-            Arc::new(Document::new("Lost", photocraft_doc::Size { width: 4, height: 4 }, photocraft_color::ColorMode::Rgb, photocraft_color::SampleType::U8));
+            Arc::new(Document::new("Lost", yedit_doc::Size { width: 4, height: 4 }, yedit_color::ColorMode::Rgb, yedit_color::SampleType::U8));
         let saver = Autosaver::new(&dir, "first");
         saver.request(doc.clone(), 1, None, SaveOptions::default());
         assert!(saver.flush().is_some_and(|r| r.is_ok()));
@@ -570,18 +570,18 @@ mod tests {
         assert_eq!(recover(&entries[0]).unwrap(), *doc);
 
         sweep_orphans(&dir, std::time::Duration::ZERO);
-        assert!(dir.join("first.pcraft").is_dir(), "aged cleanup keeps a committed bundle");
+        assert!(dir.join("first.yedit").is_dir(), "aged cleanup keeps a committed bundle");
 
         // Incomplete bundles (no manifest, or one that does not read) are neither listed nor kept.
-        let partial = dir.join("partial.pcraft");
+        let partial = dir.join("partial.yedit");
         std::fs::create_dir_all(partial.join("tiles")).unwrap();
-        let broken = dir.join("broken.pcraft");
+        let broken = dir.join("broken.yedit");
         std::fs::create_dir_all(&broken).unwrap();
         std::fs::write(broken.join("manifest.json"), b"{").unwrap();
         assert_eq!(list_recovery(&dir).len(), 1);
         sweep_orphans(&dir, std::time::Duration::ZERO);
         assert!(!partial.exists() && !broken.exists());
-        assert!(dir.join("first.pcraft").is_dir());
+        assert!(dir.join("first.yedit").is_dir());
         let _ = std::fs::remove_dir_all(&dir);
     }
 }

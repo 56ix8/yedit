@@ -1,7 +1,7 @@
-//! Render the full PhotoCraft UI offscreen (no window, no focus stealing) and save a PNG.
+//! Render the full YEDIT UI offscreen (no window, no focus stealing) and save a PNG.
 //!
 //! ```sh
-//! cargo run --release -p photocraft-ui-egui --example snapshot -- \
+//! cargo run --release -p yedit-ui-egui --example snapshot -- \
 //!     --out ui.png --size 1440x900 --scale 2 --open photo.jpg \
 //!     --script '[["ui.set", {"tool": "type"}], ["ui.menu.invoke", {"id": "image.imageSize"}]]'
 //! ```
@@ -23,8 +23,8 @@
 //! and document-tab menus that are outside the document-coordinate control pointer.
 //! `--click-at X,Y` opens a screen-space menu (for example the top Select menu) after the script.
 
-use photocraft_ui_egui::control::{ControlRequest, Outcome, handle};
-use photocraft_ui_egui::{PhotocraftApp, Services};
+use yedit_ui_egui::control::{ControlRequest, Outcome, handle};
+use yedit_ui_egui::{YeditApp, Services};
 use serde_json::Value;
 
 fn arg(args: &[String], name: &str) -> Option<String> {
@@ -44,11 +44,11 @@ fn main() {
         arg(&args, "--script").map(|s| serde_json::from_str::<Vec<(String, Value)>>(&s).expect("--script must be [[method, params], …]")).unwrap_or_default();
 
     let services = Services {
-        import: Some(Box::new(|name: &str, bytes: &[u8], opts: &photocraft_io::ImportOptions| {
-            photocraft_io::import_with_options(name, bytes, opts).map(|r| (r.document, r.warnings)).map_err(|e| e.to_string())
+        import: Some(Box::new(|name: &str, bytes: &[u8], opts: &yedit_io::ImportOptions| {
+            yedit_io::import_with_options(name, bytes, opts).map(|r| (r.document, r.warnings)).map_err(|e| e.to_string())
         })),
-        export: Some(Box::new(|doc: &photocraft_doc::Document, path: &str, settings: &photocraft_ui_egui::ExportSettings| {
-            let mut opts = photocraft_io::ExportOptions::default();
+        export: Some(Box::new(|doc: &yedit_doc::Document, path: &str, settings: &yedit_ui_egui::ExportSettings| {
+            let mut opts = yedit_io::ExportOptions::default();
             if let Some(q) = settings.jpeg_quality {
                 opts.encode.jpeg_quality = q;
             }
@@ -59,9 +59,9 @@ fn main() {
             }
             opts.tga_bits = settings.tga_bits;
             opts.encode.dds = settings.dds;
-            photocraft_io::export(doc, path, &opts).map(|r| (r.bytes, r.warnings)).map_err(|e| e.to_string())
+            yedit_io::export(doc, path, &opts).map(|r| (r.bytes, r.warnings)).map_err(|e| e.to_string())
         })),
-        write: Some(Box::new(|path: &str, bytes: &[u8]| photocraft_format::atomic_write(std::path::Path::new(path), bytes).map_err(|e| e.to_string()))),
+        write: Some(Box::new(|path: &str, bytes: &[u8]| yedit_format::atomic_write(std::path::Path::new(path), bytes).map_err(|e| e.to_string()))),
         ..Default::default()
     };
     let open = arg(&args, "--open");
@@ -80,14 +80,14 @@ fn main() {
         .with_render_options(render_options)
         .wgpu()
         .build_eframe(move |cc| {
-            PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+            YeditApp::setup_context(&cc.egui_ctx, Default::default());
             let mut services = services;
             services.is_wayland = wayland_notice;
-            services.xwayland_command = wayland_notice.then(|| "WAYLAND_DISPLAY= photocraft".into());
-            let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), services);
+            services.xwayland_command = wayland_notice.then(|| "WAYLAND_DISPLAY= yedit".into());
+            let mut app = YeditApp::new(yedit_engine::Session::new(), services);
             if update_notice {
-                app.session.updates.status = photocraft_engine::updates_cmds::Status::Available {
-                    release: photocraft_engine::updates_cmds::Release {
+                app.session.updates.status = yedit_engine::updates_cmds::Status::Available {
+                    release: yedit_engine::updates_cmds::Release {
                         version: "99.0.0".into(),
                         url: "https://github.com/storytold/photocraft/releases/tag/v99.0.0".into(),
                     },
@@ -184,7 +184,7 @@ fn main() {
     }
     println!(
         "language: {}",
-        serde_json::json!({"preference": harness.state().session.prefs().interface.language, "resolved": photocraft_ui_egui::i18n::current().code()})
+        serde_json::json!({"preference": harness.state().session.prefs().interface.language, "resolved": yedit_ui_egui::i18n::current().code()})
     );
     let img = harness.render().expect("render");
     img.save(&out).expect("save png");

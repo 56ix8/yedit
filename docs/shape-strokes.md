@@ -2,7 +2,7 @@
 
 Updated 2026-10-15: retain stroke paint and options when width reaches zero (#6191).
 
-PhotoCraft's Shape tool options bar has a Stroke Options button beside the existing width
+YEDIT's Shape tool options bar has a Stroke Options button beside the existing width
 and colour controls. It sets defaults for new Rectangle, Ellipse, Triangle, Polygon, Line
 and Custom Shape layers. Pen in Shape mode uses the same style defaults; open Pen shapes retain
 their existing foreground colour and minimum 1 px width. To edit an existing shape,
@@ -64,7 +64,7 @@ over 4096 knots/subpaths, more than 100,000 tessellation points, or a dash workl
 no custom saved preset libraries in this change. Style defaults use existing serde UI state,
 but the app does not save and restore these defaults across restarts.
 
-All fields already exist in `ShapeStroke` and the native manifest/conversion. Old `.pcraft`
+All fields already exist in `ShapeStroke` and the native manifest/conversion. Old `.yedit`
 files retain their serde defaults; saves preserve all style fields. PSD import/export maps
 the same fields through `vstk` (line width, dash set/offset, cap, join, alignment, miter limit,
 opacity, and paint); existing unknown layer blocks and original compatible vector records
@@ -100,4 +100,4 @@ fields, colour pickers, and ComboBoxes remain native egui controls.
   describes the tool options and Properties entry points, and its
   [cap/join reference](https://helpx.adobe.com/ca/illustrator/desktop/paint-and-fill/apply-and-edit-strokes/change-the-caps-or-joins-of-a-line.html)
   defines endpoint and corner behavior and the 1–500 miter range. Dash units reuse
-  PhotoCraft's existing documented `ShapeStroke`/`vstk` convention.
+  YEDIT's existing documented `ShapeStroke`/`vstk` convention.
