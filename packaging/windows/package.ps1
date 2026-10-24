@@ -98,8 +98,8 @@ Copy-Item (Join-Path $Bin 'yedit.exe'), (Join-Path $Bin 'yedit-cli.exe') $Stage
 # (their text sits on the right; the left 164 px are ours). Both must be 24-bit BMPs.
 function New-InstallerArt([string] $IconPng, [string] $BannerOut, [string] $DialogOut) {
   Add-Type -AssemblyName System.Drawing
-  $paper = [System.Drawing.ColorTranslator]::FromHtml('#efe9dc')
-  $accent = [System.Drawing.ColorTranslator]::FromHtml('#2f7bf5')
+  $paper = [System.Drawing.ColorTranslator]::FromHtml('#f3edff')
+  $accent = [System.Drawing.ColorTranslator]::FromHtml('#7b2ff7')
   $icon = [System.Drawing.Image]::FromFile($IconPng)
   try {
     foreach ($spec in @(@($BannerOut, 493, 58), @($DialogOut, 493, 312))) {
@@ -151,7 +151,7 @@ $Portable = Join-Path $TargetDir "windows-package\yedit-$Version-windows-$Arch-p
 Remove-Item -Recurse -Force $Portable -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Portable | Out-Null
 Copy-Item (Join-Path $Stage '*.exe') $Portable
-foreach ($f in 'README.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE') {
+foreach ($f in 'README.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md') {
   $p = Join-Path $Root $f
   if (Test-Path $p) { Copy-Item $p $Portable }
 }
